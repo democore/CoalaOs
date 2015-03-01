@@ -8,4 +8,3 @@ toString _arr
 };
 
 player addaction ["anzeigen", "CoalaOs\CoalaOsMain.sqf"];
-

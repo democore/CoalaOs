@@ -42,86 +42,103 @@ class MyDrink
 	movingEnable = 1; 
 	enableSimulation = 1; 
 	onLoad = "_this call myDrinkLoad";
-	class Objects 
+	objects[] = {Can};
+	controls[] = {BGBox_1401, RscEdit_1400, Video, LifeFeed, debug};
+	class Can 
 	{ 
-		class Can 
-		{ 
-			onObjectMoved = "systemChat str _this"; 
-			idc = -1; 
-			type = 82; 
-			model = "\A3\Structures_F\Items\Electronics\Laptop_unfolded_F.p3d"; 
-			scale = 3.5; 
-			direction[] = {0, -0.1, -0.65}; 
-			up[] = {0, 0.65, -0.35}; 
-			//position[] = {0,0,0.2}; optional 
-			x = 0.0; y = 0.0; z = 0.2; 
-			//positionBack[] = {0,0,1.2}; optional 
-			xBack = 0.5; yBack = 0.5; zBack = 1.2; 
-			inBack = 1; 
-			enableZoom = 1; 
-			zoomDuration = 0.001; 
-		}; 
+		onObjectMoved = "systemChat str _this"; 
+		idc = -1; 
+		type = 82; 
+		model = "\A3\Structures_F\Items\Electronics\Laptop_unfolded_F.p3d"; 
+		scale = 3.5; 
+		direction[] = {0, -0.1, -0.65}; 
+		up[] = {0, 0.65, -0.35}; 
+		//position[] = {0,0,0.2}; optional 
+		x = 0.0; y = 0.0; z = 0.2; 
+		//positionBack[] = {0,0,1.2}; optional 
+		xBack = 0.5; yBack = 0.5; zBack = 1.2; 
+		inBack = 1; 
+		enableZoom = 1; 
+		zoomDuration = 0.001; 
+	}; 
+	
+
+	class BGBox_1401
+	{
+		idc = 1401;
+		type = 0;
+		style = 80;
+		sizeEx = 0.05;
+		x = -2.55 * GUI_GRID_W + GUI_GRID_X;
+		y = -0.43 * GUI_GRID_H + GUI_GRID_Y;
+		w = 44.9 * GUI_GRID_W;
+		h = 21.1 * GUI_GRID_H;
+		colorBackground[] = {0,0,0,1};
+		colorText[] = {1,1,1,1};
+		font = "EtelkaNarrowMediumPro";
+		text = "";
+	};
+	class RscEdit_1400: Life_RscEdit
+	{
+		idc = 1400;
+		x = -2.55 * GUI_GRID_W + GUI_GRID_X;
+		y = -0.43 * GUI_GRID_H + GUI_GRID_Y;
+		w = 44.9 * GUI_GRID_W;
+		h = 21.1 * GUI_GRID_H;
+		style = 16;
+		text = "";
+		font = "EtelkaNarrowMediumPro";
+		lineSpacing = 1;
+		sizeEx = 0.03;
+		shadow = 2;
+		colorBackground[] = {1, 1, 1, 1};
+		colorText[] = {0.95, 0, 0, 1};
+		colorSelection[] = {0.8784, 0.8471, 0.651, 1.0}; 
+		//colorBackground[] = {0.5,0,0,1};
+	};
+	class Video: Life_RscPicture 
+	{ 
+		idc = 1100; 
+		text = ""; 
+		x = 18.55 * GUI_GRID_W + GUI_GRID_X;
+		y = 8.43 * GUI_GRID_H + GUI_GRID_Y;
+		w = 22.9 * GUI_GRID_W;
+		h = 11.1 * GUI_GRID_H;
+		autoplay = 1; 
+		loops = 1; 
 	};
 	
-	class controls
+	class LifeFeed: Life_RscPicture 
+	{ 
+		idc = 1101; 
+		text = ""; 
+		x = -2.55 * GUI_GRID_W + GUI_GRID_X;
+		y = -0.43 * GUI_GRID_H + GUI_GRID_Y;
+		w = 44.9 * GUI_GRID_W;
+		h = 21.1 * GUI_GRID_H;
+		autoplay = 1; 
+		loops = 1; 
+	};
+	
+	class debug: Life_RscEdit
 	{
-		class BGBox_1401
-		{
-			idc = 1401;
-			type = 0;
-			style = 80;
-			sizeEx = 0.05;
-			x = -2.55 * GUI_GRID_W + GUI_GRID_X;
-			y = -0.43 * GUI_GRID_H + GUI_GRID_Y;
-			w = 44.9 * GUI_GRID_W;
-			h = 21.1 * GUI_GRID_H;
-			colorBackground[] = {0,0,0,1};
-			colorText[] = {1,1,1,1};
-			font = "EtelkaNarrowMediumPro";
-			text = "";
-		};
-		class RscEdit_1400: Life_RscEdit
-		{
-			idc = 1400;
-			x = -2.55 * GUI_GRID_W + GUI_GRID_X;
-			y = -0.43 * GUI_GRID_H + GUI_GRID_Y;
-			w = 44.9 * GUI_GRID_W;
-			h = 21.1 * GUI_GRID_H;
-			style = 16;
-			text = "";
-			font = "EtelkaNarrowMediumPro";
-			lineSpacing = 1;
-			sizeEx = 0.03;
-			shadow = 2;
-			colorBackground[] = {1, 1, 1, 1};
-			colorText[] = {0.95, 0, 0, 1};
-			colorSelection[] = {0.8784, 0.8471, 0.651, 1.0}; 
-			//colorBackground[] = {0.5,0,0,1};
-		};
-		class Video: Life_RscPicture 
-		{ 
-			idc = 1100; 
-			text = ""; 
-			x = 18.55 * GUI_GRID_W + GUI_GRID_X;
-			y = 8.43 * GUI_GRID_H + GUI_GRID_Y;
-			w = 22.9 * GUI_GRID_W;
-			h = 11.1 * GUI_GRID_H;
-			autoplay = 1; 
-			loops = 1; 
-		};
-		
-		class LifeFeed: Life_RscPicture 
-		{ 
-			idc = 1101; 
-			text = ""; 
-			x = -2.55 * GUI_GRID_W + GUI_GRID_X;
-			y = -0.43 * GUI_GRID_H + GUI_GRID_Y;
-			w = 44.9 * GUI_GRID_W;
-			h = 21.1 * GUI_GRID_H;
-			autoplay = 1; 
-			loops = 1; 
-		};
-	}; 
+		idc = 2001;
+		x = -20 * GUI_GRID_W + GUI_GRID_X;
+		y = 0 * GUI_GRID_H + GUI_GRID_Y;
+		w = 10 * GUI_GRID_W;
+		h = 5 * GUI_GRID_H;
+		style = 16;
+		text = "";
+		font = "EtelkaNarrowMediumPro";
+		lineSpacing = 1;
+		sizeEx = 0.03;
+		shadow = 2;
+		colorBackground[] = {1, 1, 1, 1};
+		colorText[] = {0.95, 0, 0, 1};
+		colorSelection[] = {0.8784, 0.8471, 0.651, 1.0}; 
+		//colorBackground[] = {0.5,0,0,1};
+	};
+	
 };
 
 
