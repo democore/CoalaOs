@@ -1,39 +1,29 @@
 coalaVideoPlayer = nil;
 coalaLifeFeed = nil;
+coalaDisplay = nil;
 
 myDrinkLoad = 
 { 
 	private ["_display","_idc","_ctrl"]; 
 	_display = _this select 0; 
+	coalaDisplay = _display;
 	_idc = -1; 
 	_ctrl = _display displayCtrl _idc; 
 	_this select 0 displayCtrl -1 ctrlEnable false;
 	coalaVideoPlayer = _display displayCtrl 1100;
 	coalaLifeFeed = _display displayCtrl 1101;
 	
-	//missionNamespace setVariable [configName ((missionConfigFile/"MyDrink/controls/BGBox_1401") select 0), 10];
-	_ding = getArray(missionConfigFile >> "MyDrink" >> "controls");
+	execVM "CoalaOs\Drawing\CoalaOsWindowManager.sqf"
+	call fnCoala_drawBackgroundImage;
+	[5,5, "Windowname"] call fnCoala_DrawWindow;
+	call fnCoala_DrawDesktop;
 	
-	
-	
-	_backgroundControl = ["RscPicture", 
-	MISSION_ROOT + "CoalaOs\Images\tank.jpg", 
-	10 * GUI_GRID_W + GUI_GRID_X, 
-	-0.43 * GUI_GRID_H + GUI_GRID_Y,
-	10 * GUI_GRID_W,
-	10 * GUI_GRID_H, _display] call addCtrl;
-	
-	//_ding = _ding + [_backgroundControl];
-	
-	//missionNamespace setVariable [configName (missionConfigFile/"MyDrink"/"controls"), _ding];
-	
-	
-	_ding = getArray(missionConfigFile >> "MyDrink" >> "controls");
-	hint str(_ding);
+	//_ding = getArray(missionConfigFile >> "MyDrink" >> "controls");
+	//hint str(_ding);
 	
 	_textbox = ((_display) displayCtrl 1400);
-	//_textbox ctrlSetPosition [100, 100, 0,0];
-	//_textbox ctrlCommit 0;
+	_textbox ctrlSetPosition [100, 100, 0,0];
+	_textbox ctrlCommit 0;
 	
 	_keyDown = _display displayAddEventHandler ["KeyDown", 
 	{
