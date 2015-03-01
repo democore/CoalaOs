@@ -1,11 +1,11 @@
-coala_FileSystem = [["C:", 0, 0, [1,2,3,4, 17, 18], 1], 
+coala_FileSystem = [["C:", 0, 0, [1,2,3,4, 17, 18, 19], 1], 
 					["Arma", 1, 0, [6,7,10,14,15,16], 1], 
 					["Windows", 2, 0, [5,8,9], 1], 
 					["image.jpg", 3, 0, [], 0, MISSION_ROOT + "CoalaOs\Images\617x.jpg", "image"], 
 					["Image2.Jpeg", 4, 1, [], 0, MISSION_ROOT + "CoalaOs\Images\tank.jpg", "image"], 
-					["SuperImportantFile.Jpeg", 5, 2, [], 0], 
+					["SuperImportantFile.Jpeg", 5, 2, [], 0, MISSION_ROOT + "CoalaOs\Images\tank.jpg", "image"], 
 					["Arma3.exe", 6, 1, [], 0], 
-					["Arma3.Jpeg", 7, 1, [], 0], 
+					["Arma3.Jpeg", 7, 1, [], 0, MISSION_ROOT + "CoalaOs\Images\tank.jpg", "image"], 
 					["Windows7.exe", 8, 2, [], 0], 
 					["Windows8.exe", 9, 2, [], 0],
 					["Addons", 10, 1, [11, 12, 13], 1],
@@ -16,7 +16,8 @@ coala_FileSystem = [["C:", 0, 0, [1,2,3,4, 17, 18], 1],
 					["video1.mp4", 15, 2, [], 0, "\A3\Missions_F_EPA\video\A_hub_quotation.ogv", "video"],
 					["video2.mp4", 16, 2, [], 0, "\A3\Missions_F_EPA\video\A_in_quotation.ogv", "video"],
 					["surveilence.exe", 17, 0, [], 0, "CoalaOs\Programs\CoalaOsSurveilence.sqf", "exe", "surveilence"],
-					["frontcam.exe", 18, 0, [], 0, "CoalaOs\Programs\CoalaOsFrontcam.sqf", "exe", "frontcam"]];
+					["frontcam.exe", 18, 0, [], 0, "CoalaOs\Programs\CoalaOsFrontcam.sqf", "exe", "frontcam"],
+					["youtube.exe", 19, 0, [], 0, "CoalaOs\Programs\CoalaOsYoutube.sqf", "exe", "youtube"]];
 					
 coala_ActivePrograms = [];
 coala_currentFolderId = 0;

@@ -14,12 +14,14 @@ myDrinkLoad =
 	_keyDown = _display displayAddEventHandler ["KeyDown", 
 	{
 		_key = _this select 1;
+			ctrlSetText[2001, "got here 0"];
 		if((_key == 28)) then //enter
 		{
 			_input = ctrlText 1400;
 			_command = [_input] call fncoala_getLastInsert;
 			[_command] call fncoala_excecuteCommand;
-			[ctrlText 1400] call fncoala_removeTopLine;
+			_consoleText = ctrlText 1400;
+			[_consoleText] call fncoala_removeTopLine;
 		};
 	}];
 };

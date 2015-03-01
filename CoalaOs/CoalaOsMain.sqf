@@ -12,7 +12,6 @@
        |     /\'-'      /
        '.___.\   _.--;'`)
               '-'     `"*/
-
 coalaFunctionsInit = execVM "CoalaOs\CoalaOsFunctions.sqf";
 coalaHandlerInit = execVM "CoalaOs\CoalaOsHandler.sqf";
 coalaFileInit = execVM "CoalaOs\CoalaOsFileStructure.sqf";
@@ -30,7 +29,12 @@ _CRLF = toString [0x0D, 0x0A];
 _welcomeText = format["Coala OS [Version 1.34.483]%1Copyright (c) 2015 Legion Corporation. All rights reserved. jk.%1%1%2 ", _CRLF, coala_currentFolderName];
 ctrlSetText [1400, _welcomeText];
 
-waitUntil { !dialog }; // hit ESC to close it 
+waitUntil { (!dialog) or (!alive player) }; // hit ESC to close it 
+
+if(!alive player) then
+{
+	closeDialog 2;
+};
 
 //kill remaining processes
 {

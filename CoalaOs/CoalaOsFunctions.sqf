@@ -229,8 +229,9 @@ fncoala_excecuteCommand =
 
 fncoala_removeTopLine = 
 {
+	//max line num: 28
 	//[currentInput] call fncoala_getParameters;
-	
+	ctrlSetText[2001, "got here"];
 	_arr = toArray (_this select 0);
 	_CRLF = toString [0x0D, 0x0A];
 	_lastTwo = [];
@@ -256,6 +257,7 @@ fncoala_removeTopLine =
 	}
 	foreach _arr;
 	hint toString _lineBreaks;
+	ctrlSetText[2001, (toString _lineBreaks)];
 	cutText [(toString _lineBreaks),"PLAIN",2];
 };
 fncoala_getParameters = 
