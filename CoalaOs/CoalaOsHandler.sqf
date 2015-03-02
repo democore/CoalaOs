@@ -15,7 +15,6 @@ myDrinkLoad =
 	
 	execVM "CoalaOs\Drawing\CoalaOsWindowManager.sqf"
 	call fnCoala_drawBackgroundImage;
-	[5,5, "Windowname"] call fnCoala_DrawWindow;
 	call fnCoala_DrawDesktop;
 	
 	//_ding = getArray(missionConfigFile >> "MyDrink" >> "controls");
