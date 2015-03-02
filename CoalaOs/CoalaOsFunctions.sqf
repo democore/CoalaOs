@@ -5,13 +5,14 @@ fncoala_excecuteCommand =
 	//[command : String] call fnc_excecuteCommand;
 	_cmd = _this select 0;
 	_completeCmd = _cmd;
+	_returned = [];
 	//hint format["command: %1#",_cmd];
 	
 	_parameters = [_cmd] call fncoala_getParameters;
 	if(count _parameters > 0) then
 	{
 		_cmd = _parameters select 0;
-		hint format["command: %1# (including parameters)",_completeCmd];
+		//hint format["command: %1# (including parameters)",_completeCmd];
 	};
 	_commands = ["cd", "ls", "time", "help", "open", "processes", "close"];
 	_commandHelp = ["cd			- change active directory 'cd [foldername]'",
@@ -47,7 +48,7 @@ fncoala_excecuteCommand =
 			_id = parseNumber format["%1", _parameters select 1];
 			_foundArr = [];
 			_foundIndex = -1;
-			hint format["id: %1 programs:%2", _id, str(coala_ActivePrograms)];
+			//hint format["id: %1 programs:%2", _id, str(coala_ActivePrograms)];
 			{
 				if(format["%1",_id] == format["%1", _x select 1]) then
 				{
@@ -60,7 +61,7 @@ fncoala_excecuteCommand =
 			if(_foundIndex != -1) then
 			{
 				_foundArr = coala_ActivePrograms deleteAt _foundIndex;
-				hint format["compiling: fncoala_stop%1", _foundArr select 4];
+				//hint format["compiling: fncoala_stop%1", _foundArr select 4];
 				call compile format["call fncoala_stop%1", _foundArr select 4];
 				
 				_attach = format["%1Process %3 was closed.%1%1%2", _CRLF, coala_currentFolderName, _id];
@@ -187,6 +188,7 @@ fncoala_excecuteCommand =
 		_CRLF = toString [0x0D, 0x0A];
 		
 		_folders = [coala_currentFolderId] call fncoala_getSubFolders;
+		_returned = _folders;
 		
 		_folderList = [_folders] call fncoala_generateListFromFolders;
 		if(count _folders == 0) then
@@ -224,6 +226,8 @@ fncoala_excecuteCommand =
 			
 		ctrlSetText [1400, format["%1%2Command %3 is unknown.%2%2%4 ", _input, _CRLF, _cmd, coala_currentFolderName]];
 	};
+	
+	_returned
 };
 
 
@@ -256,7 +260,7 @@ fncoala_removeTopLine =
 		};
 	}
 	foreach _arr;
-	hint toString _lineBreaks;
+	//hint toString _lineBreaks;
 	ctrlSetText[2001, (toString _lineBreaks)];
 	cutText [(toString _lineBreaks),"PLAIN",2];
 };

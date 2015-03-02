@@ -1,6 +1,7 @@
 coalaVideoPlayer = nil;
 coalaLifeFeed = nil;
 coalaDisplay = nil;
+coalaConsole = nil;
 
 myDrinkLoad = 
 { 
@@ -20,9 +21,9 @@ myDrinkLoad =
 	//_ding = getArray(missionConfigFile >> "MyDrink" >> "controls");
 	//hint str(_ding);
 	
-	_textbox = ((_display) displayCtrl 1400);
-	_textbox ctrlSetPosition [100, 100, 0,0];
-	_textbox ctrlCommit 0;
+	coalaConsole = ((_display) displayCtrl 1400);
+	coalaConsole ctrlSetPosition [100, 100, 0,0];
+	coalaConsole ctrlCommit 0;
 	
 	_keyDown = _display displayAddEventHandler ["KeyDown", 
 	{
