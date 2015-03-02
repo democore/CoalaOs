@@ -10,20 +10,16 @@ activeControl = [];
 coalaDisplay displayAddEventHandler ["MouseMoving",
 {
 	[_this]call checkAndMoveWindow;
-	//hint str(_this);
 	coalaMouseX = _this select 1; 
 	coalaMouseY = _this select 2; 
 }];
 
-coalaDisplay displayAddEventHandler ["MouseButtonUp",
-{
-	//_isMouseDown = false;
-}];
-
 checkAndMoveWindow = 
 {
+	hint str (count activeControl);
 	if(count activeControl > 0) then
 	{
+		hint "moving1";
 		if(isMouseDown == true) then
 		{
 			hint "moving";
@@ -121,31 +117,17 @@ fnCoala_DrawWindow =
 	_allControls = [_windowBackground, _topBar, _close, _windowName];
 	{
 		_x setVariable ["otherElements", _allControls];
+		_x ctrlEnable true;
+		_x ctrlAddEventHandler ["MouseButtonDown",
+		{
+			isMouseDown = true; 
+			activeControl = _allControls;
+			hint "mouse down";
+		}];
+		_x ctrlCommit 0;
 	}
 	foreach _allControls;
-	
-	_windowName ctrlSetEventHandler ["MouseButtonDown",
-	{
-		isMouseDown = true; 
-		activeControl = _allControls;
-		hint "mouse down";
-	}];
-	
-	_topBar ctrlSetEventHandler ["MouseButtonDown",
-	{
-		isMouseDown = true; 
-		activeControl = _allControls;
-		hint "mouse down";
-	}];
-	
-	_windowName ctrlSetEventHandler ["MouseEnter",
-	{
-		isMouseDown = true; 
-		activeControl = _allControls;
-		hint "mouse enter";
-	}];
-	 
-	
+		
 	_allControls
 };
 
