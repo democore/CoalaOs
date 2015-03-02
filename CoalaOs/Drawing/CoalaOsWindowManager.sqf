@@ -202,6 +202,30 @@ fnCoala_DrawDesktop =
 	20,
 	1.5] call addCtrl;
 	
+	_browser = ["RscPicture", 
+	MISSION_ROOT + "CoalaOs\Images\browser.paa", 
+	11, 
+	0.19,
+	3.6,
+	2.6] call addCtrl;
+	_browser ctrlEnable true;
+	_browser ctrlAddEventHandler ["MouseButtonDblClick",
+	{
+		_newWindow = [5,5, "Browser"] call fnCoala_DrawWindow;
+		_browserCtrl = ["RscHTML", "", 0,0,0,0] call addCtrl;
+		_browserCtrl ctrlSetBackgroundColor [0,0,0,1];
+		[_newWindow select 0, _browserCtrl, 
+		[0,0,20,10.5]] call fnCoala_addControlToWindow;
+		_browserCtrl htmlLoad "http://google.de";
+	}];
+	
+	_browserName = ["RscText", 
+	"Browser", 
+	11, 
+	(-0.43) + 2.8,
+	20,
+	1.5] call addCtrl;
+	
 	
 };
 
