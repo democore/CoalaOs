@@ -4,14 +4,14 @@ coala_FileSystem = [["C:", 0, 0, [1,2,3,4, 17, 18, 19], 1],
 					["image.jpg", 3, 0, [], 0, MISSION_ROOT + "CoalaOs\Images\617x.jpg", "image"], 
 					["Image2.Jpeg", 4, 1, [], 0, MISSION_ROOT + "CoalaOs\Images\tank.jpg", "image"], 
 					["SuperImportantFile.Jpeg", 5, 2, [], 0, MISSION_ROOT + "CoalaOs\Images\tank.jpg", "image"], 
-					["Arma3.exe", 6, 1, [], 0], 
+					["Arma3.exe", 6, 1, [], 0, "", "exe"], 
 					["Arma3.Jpeg", 7, 1, [], 0, MISSION_ROOT + "CoalaOs\Images\tank.jpg", "image"], 
-					["Windows7.exe", 8, 2, [], 0], 
-					["Windows8.exe", 9, 2, [], 0],
+					["Windows7.exe", 8, 2, [], 0, "", "exe"], 
+					["Windows8.exe", 9, 2, [], 0, "", "exe"],
 					["Addons", 10, 1, [11, 12, 13], 1],
-					["JSRS.pbo", 11, 10, [], 0],
-					["TFR.pbo", 12, 10, [], 0],
-					["RHS.pbo", 13, 10, [], 0],
+					["JSRS.pbo", 11, 10, [], 0, "", "exe"],
+					["TFR.pbo", 12, 10, [], 0, "", "exe"],
+					["RHS.pbo", 13, 10, [], 0, "", "exe"],
 					["video.mp4", 14, 2, [], 0, "\A3\Missions_F_EPA\video\A_in_intro.ogv", "video"],
 					["video1.mp4", 15, 2, [], 0, "\A3\Missions_F_EPA\video\A_hub_quotation.ogv", "video"],
 					["video2.mp4", 16, 2, [], 0, "\A3\Missions_F_EPA\video\A_in_quotation.ogv", "video"],
@@ -60,7 +60,7 @@ fncoala_getSubFolders =
 		_folders set [count _folders, _curFolder];
 	}forEach _subFolderIds;
 	
-	hint str(_folders);
+	//hint str(_folders);
 	_folders
 };
 

@@ -1,22 +1,36 @@
+_processId = _this select 1;
+_fileName = _this select 2;
 fncoala_startfrontcam = 
 {
+	_programWindow = [5,5, _fileName] call fnCoala_DrawWindow;
+	_renderSurface = ["RscPicture", "", 0,0,0,0] call addCtrl;
+	[_programWindow select 0, _renderSurface, [0,0,20,10.5]] call fnCoala_addControlToWindow;
+	
+	[_programWindow select 0, _processId, "processID"] call fnCoala_addVariableToControl;
+	
 	/* create render surface */ 
-	ctrlSetText[1101, "#(argb,512,512,1)r2t(uavrtt,1)"];
+	_renderSurface ctrlSetText "#(argb,512,512,1)r2t(frontcam,1)";
+	
 	/* create camera and stream to render surface */ 
-	cam = "camera" camCreate (getPos player);//([(getPos player select 0),(getPos player select 1) + 1,getPos player select 2]);
+	_cam = "camera" camCreate (getPos player);
 	
-	cam cameraEffect ["Internal", "Back", "uavrtt"]; 
-	cam camSetTarget player;
-	cam attachTo [player, [0.1, 0.75, 1.5] ];
-	cam camSetFov 0.8; 
+	_cam cameraEffect ["Internal", "Back", "frontcam"]; 
+	_cam camSetTarget player;
+	_cam attachTo [player, [0.1, 0.75, 1.5] ];
+	_cam camSetFov 0.8; 
 	
-	cam camCommit 0;
+	_cam camCommit 0;
+	
+	missionNamespace setVariable [format["%1%2", _processId, "_cam"], _cam];
 };
 
 fncoala_stopfrontcam = 
 {
-	cam cameraEffect ["terminate","back"]; 
-	camDestroy cam;
+	_procId = _this select 0;
+	_cam = missionNamespace getVariable format["%1%2", _procId, "_cam"];
+	
+	_cam cameraEffect ["terminate","back", str(_procId)]; 
+	camDestroy _cam;
 };
 
 call fncoala_startfrontcam;

@@ -1,4 +1,16 @@
 
+fncoala_excecuteCommandFromNonConsole = 
+{
+	_attach = _this select 0;
+	if(_attach != "") then
+	{
+		_input = ctrlText 1400;
+		ctrlSetText [1400, format["%1%2 ", _input, _attach]];
+		_returned = [_attach] call fncoala_excecuteCommand;
+		_returned
+	};
+};
+
 //Führt den übergebenen Command aus.
 fncoala_excecuteCommand = 
 {
@@ -6,13 +18,11 @@ fncoala_excecuteCommand =
 	_cmd = _this select 0;
 	_completeCmd = _cmd;
 	_returned = [];
-	//hint format["command: %1#",_cmd];
 	
 	_parameters = [_cmd] call fncoala_getParameters;
 	if(count _parameters > 0) then
 	{
 		_cmd = _parameters select 0;
-		//hint format["command: %1# (including parameters)",_completeCmd];
 	};
 	_commands = ["cd", "ls", "time", "help", "open", "processes", "close"];
 	_commandHelp = ["cd			- change active directory 'cd [foldername]'",
@@ -40,7 +50,6 @@ fncoala_excecuteCommand =
 	};
 	if(_cmd == "close") then
 	{
-		//call compile format["fncoala_start%1", _file select 7];
 		_input = ctrlText 1400;
 		_CRLF = toString [0x0D, 0x0A];
 		if(count _parameters > 1) then
@@ -48,7 +57,6 @@ fncoala_excecuteCommand =
 			_id = parseNumber format["%1", _parameters select 1];
 			_foundArr = [];
 			_foundIndex = -1;
-			//hint format["id: %1 programs:%2", _id, str(coala_ActivePrograms)];
 			{
 				if(format["%1",_id] == format["%1", _x select 1]) then
 				{
@@ -61,8 +69,8 @@ fncoala_excecuteCommand =
 			if(_foundIndex != -1) then
 			{
 				_foundArr = coala_ActivePrograms deleteAt _foundIndex;
-				//hint format["compiling: fncoala_stop%1", _foundArr select 4];
-				call compile format["call fncoala_stop%1", _foundArr select 4];
+				missionNamespace setVariable [format["coala_ActivePrograms"], coala_ActivePrograms];
+				call compile format["[%2] call fncoala_stop%1", _foundArr select 4, str(_id)];
 				
 				_attach = format["%1Process %3 was closed.%1%1%2", _CRLF, coala_currentFolderName, _id];
 				ctrlSetText [1400, format["%1%2 ", _input, _attach]];
@@ -98,21 +106,18 @@ fncoala_excecuteCommand =
 				{
 					if(_file select 6 == "video") then
 					{
-						//coalaVideoPlayer ctrlSetText format["%1", _file select 5];
 						_handle = [_file] execVM "CoalaOs\Programs\CoalaOsPlayer.sqf";
 						coala_ActivePrograms set [count coala_ActivePrograms, [_handle, count coala_ActivePrograms, format["%1", _file select 0], format["%1", _file select 1], format["%1", "player"]]];
 					};
 					if(_file select 6 == "exe") then
 					{
-						_handle = [_parameters] execVM (format["%1", _file select 5]);
+						_handle = [_parameters, count coala_ActivePrograms, _file select 0] execVM (format["%1", _file select 5]);
 						coala_ActivePrograms set [count coala_ActivePrograms, [_handle, count coala_ActivePrograms, format["%1", _file select 0], format["%1", _file select 1], format["%1", _file select 7]]];
 					};
 					if(_file select 6 == "image") then
 					{
 						_handle = [_file] execVM "CoalaOs\Programs\CoalaOsPlayer.sqf";
 						coala_ActivePrograms set [count coala_ActivePrograms, [_handle, count coala_ActivePrograms, format["%1", _file select 0], format["%1", _file select 1], format["%1", "player"]]];
-						
-						//coalaVideoPlayer ctrlSetText format["%1", _file select 5];
 					};
 				}
 				else
