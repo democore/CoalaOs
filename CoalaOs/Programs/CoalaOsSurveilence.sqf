@@ -6,9 +6,11 @@ _cam = nil;
 
 fncoala_startsurveilence = 
 {
-	_programWindow = [5,5, _fileName] call fnCoala_DrawWindow;
+	_width = 30;
+	_height = 20;
+	_programWindow = [1, 1, _width, _height, _fileName] call fnCoala_DrawWindow;
 	_renderSurface = ["RscPicture", "", 0,0,0,0] call addCtrl;
-	[_programWindow select 0, _renderSurface, [0,0,20,10.5]] call fnCoala_addControlToWindow;
+	[_programWindow select 0, _renderSurface, [0,0,_width,_height - 1.5]] call fnCoala_addControlToWindow;
 	
 	_btnNormal = ["RscButton", "0", 0,0,0,0] call addCtrl;
 	[_programWindow select 0, _btnNormal, [0,0,1,1]] call fnCoala_addControlToWindow;

@@ -25,31 +25,52 @@ checkAndMoveWindow =
 	if(isMouseDown == 1) then
 	{
 		_coalaActiveControl = missionNamespace getVariable "coalaActiveControl";
-		//hint format["%1 %2 %3", coalaMouseX, coalaMouseY, str(count activeControl)];
+		_toMove = _coalaActiveControl select 0;
+		_pos = ctrlPosition _toMove;
+		
+		_width = missionNamespace getVariable format["%1%2", _toMove, "width"];
+		_height = missionNamespace getVariable format["%1%2", _toMove, "height"];
+		
+		_newX = (_pos select 0) + (coalaMouseX * 0.004);
+		_newY = (_pos select 1) + (coalaMouseY * 0.0057);
+		
+		if(_newX + _width > 1.059) then
 		{
-			_pos = ctrlPosition _x;
-			_xVersatz = missionNamespace getVariable format["%1xPlus", str(_x)];
-			_yVersatz = missionNamespace getVariable format["%1yPlus", str(_x)];
-			_newX = (_pos select 0) + (coalaMouseX * 0.004);
-			_newY = (_pos select 1) + (coalaMouseY * 0.0057);
-			if(_newX > 0.558539 + _xVersatz) then
+			_newX = 1.059 - _width;
+		};
+		if(_newX < -0.063) then
+		{
+			_newX = -0.063;
+		};
+		if(_newY + _height > 0.831) then
+		{
+			_newY = 0.831 - _height;
+		};
+		if(_newY < -0.017) then
+		{
+			_newY = -0.017;
+		};
+		_toMove ctrlSetPosition [_newX, _newY, _pos select 2, _pos select 3]; 
+		_toMove ctrlCommit 0;
+		
+		{
+			if(_x != _toMove) then
 			{
-				_newX = 0.558539 + _xVersatz;
+				_xVersatz = missionNamespace getVariable format["%1xPlus", str(_x)];
+				_yVersatz = missionNamespace getVariable format["%1yPlus", str(_x)];
+				_subPos = ctrlPosition _x;
+				_controlType = [_x, "type"] call fnCoala_getVariableToControl;
+				if(_controlType == "basic") then
+				{
+					_x ctrlSetPosition [_newX + _xVersatz , _newY + _yVersatz , _subPos select 2, _subPos select 3];
+				}
+				else
+				{
+					_x ctrlSetPosition [_newX + _xVersatz , _newY + _yVersatz + (1.45 * GUI_GRID_H) , _subPos select 2, _subPos select 3];
+				};
+				_x ctrlCommit 0;
 			};
-			if(_newX < -0.063 + _xVersatz) then
-			{
-				_newX = -0.063 + _xVersatz;
-			};
-			if(_newY > 0.710971 + _yVersatz) then
-			{
-				_newY = 0.710971 + _yVersatz;
-			};
-			if(_newY < -0.017 + _yVersatz) then
-			{
-				_newY = -0.017 + _yVersatz;
-			};
-			_x ctrlSetPosition [_newX, _newY, _pos select 2, _pos select 3]; 
-			_x ctrlCommit 0;
+			
 			if(ctrlText _x == "cmd") then
 			{
 				[_x] call fnCoala_FocusWindow;
@@ -92,6 +113,10 @@ addCtrl =
 	};
 	
 	_toCreate ctrlCommit 0;
+	
+	missionNamespace setVariable [format["%1%2", _toCreate, "width"], _w];
+	missionNamespace setVariable [format["%1%2", _toCreate, "height"], _h];
+	
 	_toCreate
 };
 
@@ -167,7 +192,7 @@ fnCoala_changeExplorerPath =
 	_command = _this select 0;
 	_newWindow = _this select 1;
 	[_newWindow select 0] call fnCoala_CloseWindow;
-	_newWindow = [5,5, "Explorer - C:\"] call fnCoala_DrawWindow;
+	_newWindow = [5, 5, 20, 12, "Explorer - C:\"] call fnCoala_DrawWindow;
 	[_command] call fncoala_excecuteCommandFromNonConsole;
 	_folders = ["ls"] call fncoala_excecuteCommandFromNonConsole;
 	_yIndex = 0;
@@ -248,7 +273,7 @@ fnCoala_DrawDesktop =
 	_HardDrive ctrlEnable true;
 	_HardDrive ctrlAddEventHandler ["MouseButtonDblClick",
 	{
-		_newWindow = [5,5, "Explorer - C:\"] call fnCoala_DrawWindow;
+		_newWindow = [5,5,20,12, "Explorer - C:\"] call fnCoala_DrawWindow;
 		["", _newWindow] call fnCoala_changeExplorerPath;
 	}];
 	
@@ -288,7 +313,7 @@ fnCoala_DrawDesktop =
 	_cmd ctrlEnable true;
 	_cmd ctrlAddEventHandler ["MouseButtonDblClick",
 	{
-		_newWindow = [5,5, "cmd"] call fnCoala_DrawWindow;
+		_newWindow = [5,5,20,12, "cmd"] call fnCoala_DrawWindow;
 		[_newWindow select 0, coalaConsole, [0,0,20,10.5]] call fnCoala_addControlToWindow;
 	}];
 	
@@ -308,11 +333,11 @@ fnCoala_DrawDesktop =
 	_browser ctrlEnable true;
 	_browser ctrlAddEventHandler ["MouseButtonDblClick",
 	{
-		_newWindow = [5,5, "Browser"] call fnCoala_DrawWindow;
+		_newWindow = [5,5,30,20, "Browser"] call fnCoala_DrawWindow;
 		_browserCtrl = ["RscHTML", "", 0,0,0,0] call addCtrl;
 		_browserCtrl ctrlSetBackgroundColor [0,0,0,1];
 		[_newWindow select 0, _browserCtrl, 
-		[0,0,20,10.5]] call fnCoala_addControlToWindow;
+		[0,0,30,20 - 1.5]] call fnCoala_addControlToWindow;
 		_browserCtrl htmlLoad "http://google.de";
 	}];
 	
@@ -352,19 +377,29 @@ fnCoala_CloseWindow =
 
 fnCoala_DrawWindow = 
 {
+	_width = 20;
+	_height = 12;
+	if(count _this > 2) then
+	{
+		_width = _this select 2;
+		if(count _this > 3) then
+		{
+			_height = _this select 3;
+		};
+	};
 	_windowBackground = ["RscPicture", 
 	MISSION_ROOT + "CoalaOs\Images\windowBackground.jpg", 
 	(_this select 0), 
 	(_this select 1),
-	20,
-	12] call addCtrl;
+	_width,
+	_height] call addCtrl;
 	[_windowBackground, 0, 0] call setXYVersatz;
 	
 	_topBar = ["RscBackground", 
 	"", 
 	(_this select 0), 
 	(_this select 1),
-	20,
+	_width,
 	1.5] call addCtrl;
 	[_topBar, 0, 0] call setXYVersatz;
 	_topBar ctrlEnable true;
@@ -382,10 +417,10 @@ fnCoala_DrawWindow =
 	}];
 	
 	_windowName = ["RscText", 
-	(_this select 2), 
-	((_this select 0)), 
+	(_this select 4), 
+	(_this select 0), 
 	(_this select 1),
-	18.5,
+	_width - 1.5,
 	1.5] call addCtrl;
 	[_windowName, 0, 0] call setXYVersatz;
 	_windowName ctrlEnable true;
@@ -399,11 +434,11 @@ fnCoala_DrawWindow =
 	
 	_close = ["RscPicture", 
 	MISSION_ROOT + "CoalaOs\Images\close.paa", 
-	((_this select 0) + 18.5), 
+	((_this select 0) + (_width - 1.5)), 
 	(_this select 1),
 	1.5,
 	1.5] call addCtrl;
-	[_close, 18.5, 0] call setXYVersatz;
+	[_close, _width - 1.5, 0] call setXYVersatz;
 	_close ctrlEnable true;
 	_close ctrlAddEventHandler ["MouseButtonDown",
 	{
@@ -520,7 +555,7 @@ fnCoala_showDialog =
 	_text = _this select 0;
 	_headerText = _this select 1;
 	
-	_newWindow = [5,5, _headerText] call fnCoala_DrawWindow;
+	_newWindow = [5, 5, 20, 12, _headerText] call fnCoala_DrawWindow;
 	_textRsc = ["RscText", _text, 0, 0, 10, 5] call addCtrl;
 	[_newWindow select 0, _textRsc, [0, 0, 20, 10.5]] call fnCoala_addControlToWindow;
 };

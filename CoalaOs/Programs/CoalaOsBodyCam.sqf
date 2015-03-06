@@ -7,11 +7,11 @@ fncoala_startbodycam =
 {
 	missionNamespace setVariable [format["%1%2", _processId, "cam"], nil];
 	
-	_programWindow = [5,5, _fileName] call fnCoala_DrawWindow;
+	_programWindow = [1,1,30,15, _fileName] call fnCoala_DrawWindow;
 	[_programWindow select 0, _processId, "processID"] call fnCoala_addVariableToControl;
 	
 	_renderSurface = ["RscPicture", "", 0,0,0,0] call addCtrl;
-	[_programWindow select 0, _renderSurface, [0,0,20,10.5]] call fnCoala_addControlToWindow;
+	[_programWindow select 0, _renderSurface, [0,0,30,15 - 1.5]] call fnCoala_addControlToWindow;
 	
 	_playerSelection = ["RscCombo", "", 0,0,0,0] call addCtrl;
 	[_programWindow select 0, _playerSelection, [0,0,10,1]] call fnCoala_addControlToWindow;
