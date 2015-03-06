@@ -82,7 +82,6 @@ fncoala_startsurveilence =
 		_uav = missionNamespace getVariable format["%1%2", _uavId, "_uav"];
 		_height = missionNamespace getVariable format["%1%2", _uavId, "_height"];
 		_height = _height + 10;
-		hint str(_height);
 		missionNamespace setVariable [format["%1%2", _uavId, "_height"], _height];
 	}];
 	_btnDown = ["RscButton", "↓", 0,0,0,0] call addCtrl;
@@ -93,9 +92,12 @@ fncoala_startsurveilence =
 		_uav = missionNamespace getVariable format["%1%2", _uavId, "_uav"];
 		_height = missionNamespace getVariable format["%1%2", _uavId, "_height"];
 		_height = _height - 10;
-		hint str(_height);
 		missionNamespace setVariable [format["%1%2", _uavId, "_height"], _height];
 	}];
+	
+	_textHeight = ["RscText", "100m", 0,0,0,0] call addCtrl;
+	[_programWindow select 0, _textHeight, [4.4,1.1,3,1]] call fnCoala_addControlToWindow;
+	
 	[_programWindow select 0, _processId, "processID"] call fnCoala_addVariableToControl;
 	
 	/* create uav and make it fly */ 
@@ -123,7 +125,7 @@ fncoala_startsurveilence =
 	
 	/* create camera and stream to render surface */ 
 	_cam = "camera" camCreate [0,0,0]; 
-	_cam cameraEffect ["Internal", "Back",_camId]; 
+	_cam cameraEffect ["Internal", "Back", _camId]; 
 	
 	/* attach cam to gunner cam position */ 
 	_cam attachTo [_uav, [0,0,0], "PiP0_pos"]; 
@@ -166,8 +168,8 @@ fncoala_startsurveilence =
 	missionNamespace setVariable [format["%1%2", _camId, "_uav"], _uav];
 	
 	missionNamespace setVariable [format["%1%2", _processId, "_doMovement"], "true"];
-	[_uav, _cam, _processId, _camId] call doCamMovement;
-	[_uav, _camId, _processId] call setDroneHeight;
+	[_uav, _cam, _processId, _camId] spawn doCamMovement;
+	[_uav, _camId, _processId, _textHeight] spawn setDroneHeight;
 };
 
 setDroneHeight = 
@@ -175,13 +177,21 @@ setDroneHeight =
 	_uav = _this select 0;
 	_id = _this select 1;
 	_procId = _this select 2;
+	_textHeight = _this select 3;
 	_isAllowed = "true";
+	_lastHeight = 100;
 	while{_isAllowed == "true" || str(_isAllowed) == "<null>"} do
 	{
 		_height = missionNamespace getVariable format["%1%2", _id, "_height"];
-		_uav flyInHeight _height;
+		if(_height != _lastHeight) then
+		{
+			_uav flyInHeight _height;
+			_lastHeight = _height;
+		};
 		_isAllowed = missionNamespace getVariable format["%1%2", _procId, "_doMovement"];
-		hint "checked height";
+		hint format["checked height %1", _height];
+		
+		_textHeight ctrlSetText format["%1m", str( floor((getPos _uav) select 2) )];
 		sleep 1;
 	};
 };
@@ -221,7 +231,6 @@ fncoala_stopsurveilence =
 	_cam = missionNamespace getVariable format["%1%2", _procId, "_cam"];
 	_uav = missionNamespace getVariable format["%1%2", _procId, "_uav"];
 	missionNamespace setVariable [format["%1%2", _procId, "_doMovement"], "false"];
-	hint "killed drone";
 };
 
 call fncoala_startsurveilence;

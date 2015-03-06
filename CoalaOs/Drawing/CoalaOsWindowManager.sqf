@@ -266,6 +266,11 @@ fnCoala_DrawDesktop =
 	21.1 - 1.8,
 	44.9,
 	1.5] call addCtrl;
+	_r = 24;
+	_g = 31;
+	_b = 28;
+	_taskBar ctrlSetBackgroundColor [_r/255, _g/255, _b/255, 1];
+	_taskBar ctrlSetForegroundColor [_r/255, _g/255, _b/255, 1];
 	
 	_startMenuButton = ["RscPicture",
 	MISSION_ROOT + "CoalaOs\Images\startmenu.paa",
@@ -363,6 +368,11 @@ fnCoala_DrawWindow =
 	1.5] call addCtrl;
 	[_topBar, 0, 0] call setXYVersatz;
 	_topBar ctrlEnable true;
+	_r = 24;
+	_g = 31;
+	_b = 28;
+	_topBar ctrlSetBackgroundColor [_r/255, _g/255, _b/255, 1];
+	_topBar ctrlSetForegroundColor [_r/255, _g/255, _b/255, 1];
 	_topBar ctrlAddEventHandler ["MouseButtonDown",
 	{
 		isMouseDown = 1; 

@@ -19,7 +19,7 @@ coalaDebug = true;
 
 fnCoala_debug = 
 {
-	"debug_console" callExtension ((_this select 0) + "#1111");
+	//"debug_console" callExtension ((_this select 0) + "#1111");
 };
 
 waitUntil { scriptDone coalaFunctionsInit && scriptDone coalaHandlerInit && scriptDone coalaFileInit };

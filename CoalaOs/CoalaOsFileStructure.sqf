@@ -17,7 +17,7 @@ coala_FileSystem = [["C:", 0, 0, [1,2,3,4, 17, 18, 19], 1],
 					["video2.mp4", 16, 2, [], 0, "\A3\Missions_F_EPA\video\A_in_quotation.ogv", "video"],
 					["surveilence.exe", 17, 0, [], 0, "CoalaOs\Programs\CoalaOsSurveilence.sqf", "exe", "surveilence"],
 					["frontcam.exe", 18, 0, [], 0, "CoalaOs\Programs\CoalaOsFrontcam.sqf", "exe", "frontcam"],
-					["youtube.exe", 19, 0, [], 0, "CoalaOs\Programs\CoalaOsYoutube.sqf", "exe", "youtube"]];
+					["Bodycam.exe", 19, 0, [], 0, "CoalaOs\Programs\CoalaOsBodyCam.sqf", "exe", "bodycam"]];
 					
 coala_ActivePrograms = [];
 coala_currentFolderId = 0;
