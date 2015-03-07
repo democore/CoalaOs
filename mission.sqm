@@ -5,12 +5,14 @@ class Mission
 	{
 		"A3_Characters_F_BLUFOR",
 		"a3_characters_f",
-		"a3_map_stratis"
+		"a3_map_stratis",
+		"A3_Modules_F_Curator_Curator"
 	};
 	addOnsAuto[]=
 	{
 		"A3_Characters_F_BLUFOR",
 		"a3_characters_f",
+		"A3_Modules_F_Curator_Curator",
 		"a3_map_stratis"
 	};
 	randomSeed=15311022;
@@ -34,7 +36,7 @@ class Mission
 	};
 	class Groups
 	{
-		items=7;
+		items=8;
 		class Item0
 		{
 			side="WEST";
@@ -50,6 +52,7 @@ class Mission
 					player="PLAYER COMMANDER";
 					leader=1;
 					skill=0.60000002;
+					text="a";
 				};
 			};
 		};
@@ -68,6 +71,18 @@ class Mission
 					player="PLAY CDG";
 					leader=1;
 					skill=0.60000002;
+				};
+			};
+			class Waypoints
+			{
+				items=1;
+				class Item0
+				{
+					position[]={6086.6792,11.092429,5462.3184};
+					class Effects
+					{
+					};
+					showWP="NEVER";
 				};
 			};
 		};
@@ -157,6 +172,52 @@ class Mission
 					vehicle="B_Soldier_F";
 					player="PLAY CDG";
 					leader=1;
+					skill=0.60000002;
+				};
+			};
+		};
+		class Item7
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={2025.739,6.1752496,5815.5342};
+					class args
+					{
+						items=4;
+						class Item0
+						{
+							value="a";
+							parentCls="ModuleCurator_F";
+							typeName="Owner";
+						};
+						class Item1
+						{
+							value="";
+							parentCls="ModuleCurator_F";
+							typeName="Name";
+						};
+						class Item2
+						{
+							value="2";
+							parentCls="ModuleCurator_F";
+							typeName="Addons";
+						};
+						class Item3
+						{
+							value="0";
+							parentCls="ModuleCurator_F";
+							typeName="Forced";
+						};
+					};
+					id=7;
+					side="LOGIC";
+					vehicle="ModuleCurator_F";
+					leader=1;
+					lock="UNLOCKED";
 					skill=0.60000002;
 				};
 			};

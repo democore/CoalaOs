@@ -11,15 +11,9 @@ myDrinkLoad =
 	_idc = -1; 
 	_ctrl = _display displayCtrl _idc; 
 	_this select 0 displayCtrl -1 ctrlEnable false;
-	coalaVideoPlayer = _display displayCtrl 1100;
-	coalaLifeFeed = _display displayCtrl 1101;
-	
 	execVM "CoalaOs\Drawing\CoalaOsWindowManager.sqf"
 	call fnCoala_drawBackgroundImage;
 	call fnCoala_DrawDesktop;
-	
-	//_ding = getArray(missionConfigFile >> "MyDrink" >> "controls");
-	//hint str(_ding);
 	
 	coalaConsole = ((_display) displayCtrl 1400);
 	coalaConsole ctrlSetPosition [100, 100, 0,0];

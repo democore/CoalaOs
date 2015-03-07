@@ -7,6 +7,13 @@ coalaMouseY = 0;
 isMouseDown = 0;
 coalaWindowId = 1801;
 
+GUI_TOP = -4.85;
+GUI_LEFT = -11.8;
+GUI_WIDTH  = 63.3;
+GUI_HEIGHT = 30;
+GUI_RIGHT = (GUI_WIDTH + GUI_LEFT) * GUI_GRID_W;
+GUI_BOTTOM = (GUI_HEIGHT + GUI_TOP) * GUI_GRID_H;
+
 coalaDisplay displayAddEventHandler ["MouseMoving",
 {
 	[_this]call checkAndMoveWindow;
@@ -34,21 +41,21 @@ checkAndMoveWindow =
 		_newX = (_pos select 0) + (coalaMouseX * 0.004);
 		_newY = (_pos select 1) + (coalaMouseY * 0.0057);
 		
-		if(_newX + _width > 1.059) then
+		if(_newX + _width > GUI_RIGHT) then
 		{
-			_newX = 1.059 - _width;
+			_newX = GUI_RIGHT - _width;
 		};
-		if(_newX < -0.063) then
+		if(_newX < GUI_LEFT * GUI_GRID_W) then
 		{
-			_newX = -0.063;
+			_newX = GUI_LEFT * GUI_GRID_W;
 		};
-		if(_newY + _height > 0.831) then
+		if(_newY + _height > GUI_BOTTOM) then
 		{
-			_newY = 0.831 - _height;
+			_newY = GUI_BOTTOM - _height;
 		};
-		if(_newY < -0.017) then
+		if(_newY < GUI_TOP * GUI_GRID_H) then
 		{
-			_newY = -0.017;
+			_newY = GUI_TOP * GUI_GRID_H;
 		};
 		_toMove ctrlSetPosition [_newX, _newY, _pos select 2, _pos select 3]; 
 		_toMove ctrlCommit 0;
@@ -124,10 +131,10 @@ fnCoala_drawBackgroundImage =
 {
 	_backgroundControl = ["RscPicture", 
 	MISSION_ROOT + "CoalaOs\Images\background.jpg", 
-	-2.55, 
-	-0.43,
-	44.9,
-	21.1] call addCtrl;
+	GUI_LEFT, 
+	GUI_TOP,
+	GUI_WIDTH,
+	GUI_HEIGHT] call addCtrl;
 };
 
 fnCoala_addFolderToExplorer = 
@@ -265,32 +272,39 @@ fnCoala_changeExplorerPath =
 	foreach _folders;
 };
 
+fnCoala_AddDesktopIcon = 
+{
+	_picture = _this select 2;
+	_name = _this select 3;
+	_xAnpasser = _this select 4;
+	
+	_icon = ["RscPicture", 
+	MISSION_ROOT + _picture, 
+	_this select 0, _this select 1, 4, 3] call addCtrl;
+	_icon ctrlEnable true;
+	
+	_windowName = ["RscText", 
+	_name, 
+	(_this select 0) + _xAnpasser, 
+	(_this select 1) + 2.4,
+	4, 1.5] call addCtrl;
+	_windowName ctrlEnable true;
+	
+	_returned = [_icon, _windowName];
+	
+	_returned
+};
+
 fnCoala_DrawDesktop = 
 {
-	_HardDrive = ["RscPicture", 
-	MISSION_ROOT + "CoalaOs\Images\Hard-Drive-icon.paa", 
-	-2, 0, 4, 3, true] call addCtrl;
-	_HardDrive ctrlEnable true;
-	_HardDrive ctrlAddEventHandler ["MouseButtonDblClick",
+	_explorer = [GUI_LEFT + 2, GUI_TOP + 2, "CoalaOs\Images\Hard-Drive-icon.paa", "C:\", 1.1] call fnCoala_AddDesktopIcon;
+	(_explorer select 0) ctrlAddEventHandler ["MouseButtonDblClick",
 	{
 		_newWindow = [5,5,20,12, "Explorer - C:\"] call fnCoala_DrawWindow;
 		["", _newWindow] call fnCoala_changeExplorerPath;
 	}];
 	
-	_windowName = ["RscText", 
-	"C:\", 
-	-0.7, 
-	(-0.43) + 2.8,
-	2,
-	1.5, false] call addCtrl;
-	_windowName ctrlEnable true;
-	
-	_taskBar = ["RscBackground", 
-	"", 
-	-2.55, 
-	21.1 - 1.8,
-	44.9,
-	1.5] call addCtrl;
+	_taskBar = ["RscBackground", "", GUI_LEFT, GUI_HEIGHT - 6.4, GUI_WIDTH, 1.5] call addCtrl;
 	_r = 24;
 	_g = 31;
 	_b = 28;
@@ -304,51 +318,23 @@ fnCoala_DrawDesktop =
 	1.7,
 	1.7] call addCtrl;
 	
-	_cmd = ["RscPicture", 
-	MISSION_ROOT + "CoalaOs\Images\cmd.paa", 
-	5, 
-	0.19,
-	3.6,
-	2.6] call addCtrl;
-	_cmd ctrlEnable true;
-	_cmd ctrlAddEventHandler ["MouseButtonDblClick",
+	_cmd = [GUI_LEFT + 8, GUI_TOP + 2, "CoalaOs\Images\cmd.paa", "cmd", 0.9] call fnCoala_AddDesktopIcon;
+	(_cmd select 0) ctrlAddEventHandler ["MouseButtonDblClick",
 	{
 		_newWindow = [5,5,20,12, "cmd"] call fnCoala_DrawWindow;
 		[_newWindow select 0, coalaConsole, [0,0,20,10.5]] call fnCoala_addControlToWindow;
 	}];
 	
-	_cmdName = ["RscText", 
-	"cmd", 
-	5.5, 
-	(-0.43) + 2.8,
-	20,
-	1.5] call addCtrl;
-	
-	_browser = ["RscPicture", 
-	MISSION_ROOT + "CoalaOs\Images\browser.paa", 
-	11, 
-	0.19,
-	3.6,
-	2.6] call addCtrl;
-	_browser ctrlEnable true;
-	_browser ctrlAddEventHandler ["MouseButtonDblClick",
+	_browser = [GUI_LEFT + 14, GUI_TOP + 2, "CoalaOs\Images\browser.paa", "Browser", 0] call fnCoala_AddDesktopIcon;
+	(_browser select 0) ctrlAddEventHandler ["MouseButtonDblClick",
 	{
 		_newWindow = [5,5,30,20, "Browser"] call fnCoala_DrawWindow;
 		_browserCtrl = ["RscHTML", "", 0,0,0,0] call addCtrl;
 		_browserCtrl ctrlSetBackgroundColor [0,0,0,1];
 		[_newWindow select 0, _browserCtrl, 
 		[0,0,30,20 - 1.5]] call fnCoala_addControlToWindow;
-		_browserCtrl htmlLoad "http://google.de";
-	}];
-	
-	_browserName = ["RscText", 
-	"Browser", 
-	11, 
-	(-0.43) + 2.8,
-	20,
-	1.5] call addCtrl;
-	
-	
+		_browserCtrl htmlLoad "www.golem.de";
+	}];	
 };
 
 setXYVersatz = 

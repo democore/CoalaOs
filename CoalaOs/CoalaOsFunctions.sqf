@@ -106,7 +106,7 @@ fncoala_excecuteCommand =
 				{
 					if(_file select 6 == "video") then
 					{
-						_handle = [_file] execVM "CoalaOs\Programs\CoalaOsPlayer.sqf";
+						_handle = [_file, count coala_ActivePrograms] execVM "CoalaOs\Programs\CoalaOsPlayer.sqf";
 						coala_ActivePrograms set [count coala_ActivePrograms, [_handle, count coala_ActivePrograms, format["%1", _file select 0], format["%1", _file select 1], format["%1", "player"]]];
 					};
 					if(_file select 6 == "exe") then
@@ -116,7 +116,7 @@ fncoala_excecuteCommand =
 					};
 					if(_file select 6 == "image") then
 					{
-						_handle = [_file] execVM "CoalaOs\Programs\CoalaOsPlayer.sqf";
+						_handle = [_file, count coala_ActivePrograms] execVM "CoalaOs\Programs\CoalaOsPlayer.sqf";
 						coala_ActivePrograms set [count coala_ActivePrograms, [_handle, count coala_ActivePrograms, format["%1", _file select 0], format["%1", _file select 1], format["%1", "player"]]];
 					};
 				}

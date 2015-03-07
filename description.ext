@@ -3,62 +3,32 @@
 #define GUI_GRID_Y	(0)
 #define GUI_GRID_W	(0.025)
 #define GUI_GRID_H	(0.04)
+#include "debug_console.hpp"
 
-
-	
-class RscTitles
-{
-	class Default 
-	{
-		idd = -1;
-		fadein = 0;
-		fadeout = 0;
-		duration = 0;
-	};
-	class player
-	{
-		idd = 1001; 
-		movingEnable = 1;
-		duration = 10000;
-		class controls 
-		{
-			class Video_rsc: Life_RscPicture 
-			{ 
-				idc = 1102; 
-				text = "\A3\Missions_F_EPA\video\A_in_intro.ogv"; 
-				x = 25.55 * GUI_GRID_W + GUI_GRID_X;
-				y = 8.43 * GUI_GRID_H + GUI_GRID_Y;
-				w = 22.9 * GUI_GRID_W;
-				h = 11.1 * GUI_GRID_H;
-				autoplay = 1; 
-				loops = 1; 
-			};
-		};
-	};
-};
 class MyDrink 
 { 
 	idd = 1000; 
-	movingEnable = 1; 
+	movingEnable = 0; 
 	enableSimulation = 1; 
-	onLoad = "_this call myDrinkLoad";
+	onLoad = "_this call myDrinkLoad; _this select 0 displayCtrl 1002 ctrlEnable false";
 	objects[] = {Can};
 	controls[] = {BGBox_1401, RscEdit_1400, Video, LifeFeed, debug};
 	class Can 
 	{ 
 		onObjectMoved = "systemChat str _this"; 
-		idc = -1; 
+		onLoad = "_this select 0 displayCtrl -1 ctrlEnable false";
+		idc = 1002; 
 		type = 82; 
 		model = "\A3\Structures_F\Items\Electronics\Laptop_unfolded_F.p3d"; 
 		scale = 3.5; 
-		direction[] = {0, -0.1, -0.65}; 
+		direction[] = {0, -0.1, -1}; 
 		up[] = {0, 0.65, -0.35}; 
 		//position[] = {0,0,0.2}; optional 
 		x = 0.0; y = 0.0; z = 0.2; 
 		//positionBack[] = {0,0,1.2}; optional 
-		xBack = 0.5; yBack = 0.5; zBack = 1.2; 
+		xBack = 0.5; yBack = 0.5; zBack = 0.81; 
 		inBack = 1; 
-		enableZoom = 1; 
+		enableZoom = 0;
 		zoomDuration = 0.001; 
 	}; 
 	
@@ -69,7 +39,7 @@ class MyDrink
 		type = 0;
 		style = 80;
 		sizeEx = 0.05;
-		x = -2.55 * GUI_GRID_W + GUI_GRID_X;
+		x = -5.55 * GUI_GRID_W + GUI_GRID_X;
 		y = -0.43 * GUI_GRID_H + GUI_GRID_Y;
 		w = 44.9 * GUI_GRID_W;
 		h = 21.1 * GUI_GRID_H;
@@ -92,53 +62,10 @@ class MyDrink
 		sizeEx = 0.03;
 		shadow = 2;
 		colorBackground[] = {1, 1, 1, 1};
-		colorText[] = {0.95, 0, 0, 1};
+		colorText[] = {0, 0, 0, 1};
 		colorSelection[] = {0.8784, 0.8471, 0.651, 1.0}; 
 		//colorBackground[] = {0.5,0,0,1};
 	};
-	class Video: Life_RscPicture 
-	{ 
-		idc = 1100; 
-		text = ""; 
-		x = 18.55 * GUI_GRID_W + GUI_GRID_X;
-		y = 8.43 * GUI_GRID_H + GUI_GRID_Y;
-		w = 22.9 * GUI_GRID_W;
-		h = 11.1 * GUI_GRID_H;
-		autoplay = 1; 
-		loops = 1; 
-	};
-	
-	class LifeFeed: Life_RscPicture 
-	{ 
-		idc = 1101; 
-		text = ""; 
-		x = -2.55 * GUI_GRID_W + GUI_GRID_X;
-		y = -0.43 * GUI_GRID_H + GUI_GRID_Y;
-		w = 44.9 * GUI_GRID_W;
-		h = 21.1 * GUI_GRID_H;
-		autoplay = 1; 
-		loops = 1; 
-	};
-	
-	class debug: Life_RscEdit
-	{
-		idc = 2001;
-		x = -20 * GUI_GRID_W + GUI_GRID_X;
-		y = 0 * GUI_GRID_H + GUI_GRID_Y;
-		w = 10 * GUI_GRID_W;
-		h = 5 * GUI_GRID_H;
-		style = 16;
-		text = "";
-		font = "EtelkaNarrowMediumPro";
-		lineSpacing = 1;
-		sizeEx = 0.03;
-		shadow = 2;
-		colorBackground[] = {1, 1, 1, 1};
-		colorText[] = {0.95, 0, 0, 1};
-		colorSelection[] = {0.8784, 0.8471, 0.651, 1.0}; 
-		//colorBackground[] = {0.5,0,0,1};
-	};
-	
 };
 
 

@@ -30,6 +30,9 @@ _laptop setDir (180);
 hideObject _laptop;
 
 _ok = createDialog "MyDrink";
+sleep 0.01;
+closeDialog 2;
+_ok = createDialog "MyDrink";
 _CRLF = toString [0x0D, 0x0A];
 
 _welcomeText = format["Coala OS [Version 1.34.483]%1Copyright (c) 2015 Legion Corporation. All rights reserved. jk.%1%1%2 ", _CRLF, coala_currentFolderName];
