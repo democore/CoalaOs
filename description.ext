@@ -3,7 +3,6 @@
 #define GUI_GRID_Y	(0)
 #define GUI_GRID_W	(0.025)
 #define GUI_GRID_H	(0.04)
-#include "debug_console.hpp"
 
 class MyDrink 
 { 
@@ -12,7 +11,7 @@ class MyDrink
 	enableSimulation = 1; 
 	onLoad = "_this call myDrinkLoad; _this select 0 displayCtrl 1002 ctrlEnable false";
 	objects[] = {Can};
-	controls[] = {BGBox_1401, RscEdit_1400, Video, LifeFeed, debug};
+	controls[] = {BGBox_1401, RscEdit_1400};
 	class Can 
 	{ 
 		onObjectMoved = "systemChat str _this"; 
