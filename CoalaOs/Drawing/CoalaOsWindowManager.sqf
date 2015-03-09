@@ -295,6 +295,59 @@ fnCoala_AddDesktopIcon =
 	_returned
 };
 
+fnCoala_DrawTaskBar = 
+{
+	/*_startMenuButton = ["RscPicture",
+	MISSION_ROOT + "CoalaOs\Images\startmenu.paa",
+	-2.55 + 0.3,
+	21.1 - 1.8,
+	1.7,
+	1.7] call addCtrl;*/
+	
+	_taskBar = ["RscBackground", "", GUI_LEFT, GUI_HEIGHT - 6.4, GUI_WIDTH, 1.5] call addCtrl;
+	_r = 24;
+	_g = 31;
+	_b = 28;
+	_taskBar ctrlSetBackgroundColor [_r/255, _g/255, _b/255, 1];
+	_taskBar ctrlSetForegroundColor [_r/255, _g/255, _b/255, 1];
+	
+	_taskBarTime = ["RscText", "", (GUI_LEFT + GUI_WIDTH) - 4.4,GUI_HEIGHT - 6.5, 5, 1.5] call addCtrl;
+	
+	[_taskBarTime] spawn fnCoala_drawTime;
+};
+
+fnCoala_drawTime = 
+{
+	_timeControl = _this select 0;
+	while { (dialog) and (alive player) } do
+	{
+		_hour = floor daytime; 
+		_strHour = str(_hour);
+		if(_hour < 10) then
+		{
+			_strHour = format["0%1", _hour];
+		};
+		
+		_minute = floor ((daytime - _hour) * 60); 
+		_strMinute = str(_minute);
+		if(_minute < 10) then
+		{
+			_strMinute = format["0%1", _minute];
+		};
+		
+		_second = floor (((((daytime) - (_hour))*60) - _minute)*60); 
+		_strSecond = str(_second);
+		if(_second < 10) then
+		{
+			_strSecond = format["0%1", _second];
+		};
+		
+		_time24 = format ["%1:%2:%3",_strHour,_strMinute,_strSecond];
+		_timeControl ctrlSetText _time24;
+		sleep 1;
+	};
+};
+
 fnCoala_DrawDesktop = 
 {
 	_explorer = [GUI_LEFT + 2, GUI_TOP + 2, "CoalaOs\Images\Hard-Drive-icon.paa", "C:\", 1.1] call fnCoala_AddDesktopIcon;
@@ -304,19 +357,6 @@ fnCoala_DrawDesktop =
 		["", _newWindow] call fnCoala_changeExplorerPath;
 	}];
 	
-	_taskBar = ["RscBackground", "", GUI_LEFT, GUI_HEIGHT - 6.4, GUI_WIDTH, 1.5] call addCtrl;
-	_r = 24;
-	_g = 31;
-	_b = 28;
-	_taskBar ctrlSetBackgroundColor [_r/255, _g/255, _b/255, 1];
-	_taskBar ctrlSetForegroundColor [_r/255, _g/255, _b/255, 1];
-	
-	_startMenuButton = ["RscPicture",
-	MISSION_ROOT + "CoalaOs\Images\startmenu.paa",
-	-2.55 + 0.3,
-	21.1 - 1.8,
-	1.7,
-	1.7] call addCtrl;
 	
 	_cmd = [GUI_LEFT + 8, GUI_TOP + 2, "CoalaOs\Images\cmd.paa", "cmd", 0.9] call fnCoala_AddDesktopIcon;
 	(_cmd select 0) ctrlAddEventHandler ["MouseButtonDblClick",
@@ -328,13 +368,38 @@ fnCoala_DrawDesktop =
 	_browser = [GUI_LEFT + 14, GUI_TOP + 2, "CoalaOs\Images\browser.paa", "Browser", 0] call fnCoala_AddDesktopIcon;
 	(_browser select 0) ctrlAddEventHandler ["MouseButtonDblClick",
 	{
-		_newWindow = [5,5,30,20, "Browser"] call fnCoala_DrawWindow;
+		_width = 40;
+		_height = 20;
+		_standartURL = "http://www.justdev.de/arma/index.html";
+		_newWindow = [0,0,_width,_height, "Browser"] call fnCoala_DrawWindow;
+		
 		_browserCtrl = ["RscHTML", "", 0,0,0,0] call addCtrl;
 		_browserCtrl ctrlSetBackgroundColor [0,0,0,1];
 		[_newWindow select 0, _browserCtrl, 
-		[0,0,30,20 - 1.5]] call fnCoala_addControlToWindow;
-		_browserCtrl htmlLoad "www.golem.de";
+		[0,1.5,_width,_height - 1.5]] call fnCoala_addControlToWindow;
+		
+		_browserCtrl htmlLoad _standartURL;
+		
+		_url = ["RscEdit", _standartURL, 0,0,0,0] call addCtrl;
+		[_newWindow select 0, _url, 
+		[0.2,0,_width - 5.5,1.5]] call fnCoala_addControlToWindow;
+		
+		_changeSiteButton = ["RscButton", "Los", 0,0,0,0] call addCtrl;
+		[_newWindow select 0, _changeSiteButton, 
+		[_width - 5,0,5,1.5]] call fnCoala_addControlToWindow;
+		_changeSiteButton ctrlAddEventHandler ["MouseButtonDown", 
+		{
+			_browserCtrl = missionNamespace getVariable format["%1browser", str(_this select 0)];
+			_url = missionNamespace getVariable format["%1url", str(_this select 0)];
+			
+			_browserCtrl htmlLoad (ctrlText _url);
+		}];
+		
+		missionNamespace setVariable [ format["%1browser", str(_changeSiteButton)], _browserCtrl];
+		missionNamespace setVariable [ format["%1url", str(_changeSiteButton)], _url];
 	}];	
+	
+	call fnCoala_DrawTaskBar;
 };
 
 setXYVersatz = 

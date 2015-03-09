@@ -31,5 +31,11 @@ myDrinkLoad =
 			_consoleText = ctrlText 1400;
 			[_consoleText] call fncoala_removeTopLine;
 		};
+		//tfar befehle zum merken aus der fn_ClientInit.sqf
+		//call TFAR_fnc_onSwTangentPressed; call TFAR_fnc_onSwTangentReleased;
+	}];
+	_keyUp = _display displayAddEventHandler ["KeyUp",
+	{
+		
 	}];
 };

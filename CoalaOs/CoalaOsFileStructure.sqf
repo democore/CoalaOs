@@ -1,4 +1,4 @@
-coala_FileSystem = [["C:", 0, 0, [1,2,3,4, 17, 18, 19], 1], 
+coala_FileSystem = [["C:", 0, 0, [1,2, 17, 18, 19], 1], 
 					["Arma", 1, 0, [6,7,10,14,15,16], 1], 
 					["Windows", 2, 0, [5,8,9], 1], 
 					["image.jpg", 3, 0, [], 0, MISSION_ROOT + "CoalaOs\Images\617x.jpg", "image"], 
