@@ -98,7 +98,7 @@ addCtrl =
 	_h = (_this select 5) * GUI_GRID_H;
 	_toCreate = (findDisplay 1000) ctrlCreate [_type, coalaWindowId];
 	coalaWindowId = coalaWindowId + 1;
-	//hint str(_toCreate);
+
 	if(_text != "") then
 	{
 		_toCreate ctrlSetText _text;
@@ -111,13 +111,11 @@ addCtrl =
 		{
 			(_this select 0) ctrlSetBackgroundColor [1, 1, 1, 0.3];
 			(_this select 0) ctrlCommit 0;
-			//hint "mouseEnter";
 		}];
 		_toCreate ctrlAddEventHandler ["MouseExit",
 		{
 			(_this select 0) ctrlSetBackgroundColor [0, 0, 0, 0];
 			(_this select 0) ctrlCommit 0;
-			//hint "mouseExit";
 		}];
 	};
 	
@@ -129,6 +127,7 @@ addCtrl =
 	_toCreate
 };
 
+//Draws the Background Image. Should be called before any Windows or the Desktop are added
 fnCoala_drawBackgroundImage =
 {
 	_backgroundControl = ["RscPicture", 
@@ -139,63 +138,9 @@ fnCoala_drawBackgroundImage =
 	GUI_HEIGHT] call addCtrl;
 };
 
-fnCoala_addFolderToExplorer = 
-{
-	hint "got called";
-	_newWindow = _this select 0;
-	_cur = _this select 1;
-	_yIndex = _this select 2;
-	_breaker = _this select 3;
-	_counter = _this select 4;
-	
-	_imageName = "folder";
-	if(count _cur > 6) then
-	{
-		if(_cur select 6 == "image") then
-		{
-			_imageName = "image";
-		};
-		if(_cur select 6 == "exe") then
-		{
-			_imageName = "exe";
-		};
-	};
-	
-	_folderCtrl = ["RscPicture", MISSION_ROOT + "CoalaOs\Images\" + _imageName + ".paa", 0,0,0,0] call addCtrl;
-	_folderCtrl ctrlEnable true;
-	[_folderCtrl, _cur, "folderStructure"] call fnCoala_addVariableToControl;
-	_folderCtrl ctrlAddEventHandler ["MouseButtonDblClick",
-	{
-		_folderInfo = [_this select 0, "folderStructure"] call fnCoala_getVariableToControl;
-		_folders = [_this select 0] call fnCoala_getWindowFromControl;
-		[format["cd %1", (_folderInfo select 0)], _folders] call fnCoala_changeExplorerPath;
-		hint str(format["%1", _folders]);
-	}];
-	
-	_name = (_cur select 0);
-	_folderCtrlText = ["RscText", _name, 0,0,0,0] call addCtrl;
-	_folderCtrlText ctrlSetFontHeight 0.03;
-	_folderCtrlText ctrlSetTextColor [0,0,0,1]; 
-	_folderCtrlText ctrlSetTooltip _name;
-	
-	[_newWindow select 0, _folderCtrl, 
-	[0.5 + _counter * 4 + 1 * _counter,_yIndex * 5 + 0.2,4,4]] call fnCoala_addControlToWindow;
-	
-	[_newWindow select 0, _folderCtrlText, 
-	[0.5 + _counter * 4 + 1 * _counter,_yIndex * 5 + 3.8,4,1]] call fnCoala_addControlToWindow;
-	
-	if(_breaker == _counter) then
-	{
-		_yIndex = _yIndex + 1;
-		_counter = 0;
-	}
-	else
-	{
-		_counter = _counter + 1;
-	};
-	[_yIndex, _counter]
-};
-
+//Changes the path of the Explorer
+//_this select 0 -> the Command that should be excecuted (for example "cd Arma")
+//_this select 1 -> the old Explorer Window
 fnCoala_changeExplorerPath = 
 {
 	_command = _this select 0;
@@ -274,6 +219,13 @@ fnCoala_changeExplorerPath =
 	foreach _folders;
 };
 
+//Adds a single Desktop Icon
+//_this select 0 -> x
+//_this select 1 -> y
+//_this select 2 -> picture path
+//_this select 3 -> name
+//_this select 4 -> Text X Correction
+//Returns: the Control of the Icon and the control of the Text : Array
 fnCoala_AddDesktopIcon = 
 {
 	_picture = _this select 2;
@@ -297,15 +249,9 @@ fnCoala_AddDesktopIcon =
 	_returned
 };
 
+//Draws the Taskbar
 fnCoala_DrawTaskBar = 
-{
-	/*_startMenuButton = ["RscPicture",
-	MISSION_ROOT + "CoalaOs\Images\startmenu.paa",
-	-2.55 + 0.3,
-	21.1 - 1.8,
-	1.7,
-	1.7] call addCtrl;*/
-	
+{	
 	_taskBar = ["RscBackground", "", GUI_LEFT, GUI_HEIGHT - 6.4, GUI_WIDTH, 1.5] call addCtrl;
 	_r = 24;
 	_g = 31;
@@ -318,6 +264,7 @@ fnCoala_DrawTaskBar =
 	[_taskBarTime] spawn fnCoala_drawTime;
 };
 
+//Draws the Ingame time on the bottom right Corner
 fnCoala_drawTime = 
 {
 	_timeControl = _this select 0;
@@ -350,6 +297,7 @@ fnCoala_drawTime =
 	};
 };
 
+//Draws the Desktop
 fnCoala_DrawDesktop = 
 {
 	_explorer = [GUI_LEFT + 2, GUI_TOP + 2, "CoalaOs\Images\Hard-Drive-icon.paa", "C:\", 1.1] call fnCoala_AddDesktopIcon;
@@ -408,9 +356,10 @@ setXYVersatz =
 {
 	missionNamespace setVariable [ format["%1xPlus", str(_this select 0)], (_this select 1) * GUI_GRID_W];
 	missionNamespace setVariable [ format["%1yPlus", str(_this select 0)], (_this select 2) * GUI_GRID_H];
-	//hint format["%1", (_this select 1)* GUI_GRID_W];
 };
 
+//Closes the given Window
+//_this select 0 -> Any control from the window
 fnCoala_CloseWindow = 
 {
 	_control = _this select 0;
@@ -428,6 +377,13 @@ fnCoala_CloseWindow =
 	foreach _window;
 };
 
+//Draws a Window on the Screen. The returned Window will already have a close button and will be dragable
+//_this select 0 -> x
+//_this select 1 -> y
+//_this select 2 -> width
+//_this select 3 -> height
+//_this select 4 -> name
+//Returns: All controls in the Window : Array
 fnCoala_DrawWindow = 
 {
 	_width = 20;
@@ -510,6 +466,8 @@ fnCoala_DrawWindow =
 };
 
 //currently crashes arma after a few trys
+//Deletes all Controls that were customly added to the control.
+//_this select 0 -> the Background of the window.
 fnCoala_clearWindow = 
 {
 	_windowControl = _this select 0;
@@ -523,6 +481,10 @@ fnCoala_clearWindow =
 	} foreach _controls;
 };
 
+//Add a variable to a given Control
+//_this select 0 -> the Control that will get the variable
+//_this select 1 -> the Value of the Variable
+//(Optional) _this select 2 -> The Name of the Variable
 fnCoala_addVariableToControl = 
 {
 	_control = _this select 0;
@@ -531,12 +493,14 @@ fnCoala_addVariableToControl =
 	if(count _this > 2) then
 	{
 		_varName = _this select 2;
-		//hint "varname was added";
 	};
-	//hint str(_this);
 	missionNamespace setVariable [format["%1%2", str(_control), _varName], _variable];
 };
 
+//get a variable from the given Control
+//_this select 0 -> The Control
+//(Optional) _this select 1 -> the name of the variable. - If no parameter is given, it will return the value set from fnCoala_addVariableToControl with no given paramter
+//Returns: The variable : Any
 fnCoala_getVariableToControl = 
 {
 	_control = _this select 0;
@@ -549,13 +513,17 @@ fnCoala_getVariableToControl =
 	_variable
 };
 
-//Gibt einen Array mit allen Controls die zum Fenster des gegebenen Controls zurück
+//Returns a array with all Controls of the window to the given control
+//_this select 0 -> the Control who's window you want
+//Returns: All Controls in the Window : Array
 fnCoala_getWindowFromControl = 
 {
 	_window = missionNamespace getVariable str(_this select 0);
 	_window
 };
 
+//Set the given Window as Focused.
+//_this select 0 -> the background control of the window.
 fnCoala_FocusWindow = 
 {
 	_control = _this select 0;
@@ -603,6 +571,9 @@ fnCoala_addControlToWindow =
 	};
 };
 
+//Shows a basic Dialog (UNFINISHED)
+//_this select 0 -> The text
+//_this select 1 -> The header Text
 fnCoala_showDialog = 
 {
 	_text = _this select 0;

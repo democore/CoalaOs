@@ -36,8 +36,19 @@ fncoala_startbodycam =
 		_renderSurface ctrlSetText "#(argb,512,512,1)r2t(" + _playerId + ",1)";
 		
 		_cam = "camera" camCreate [0,0,0]; 
-		_cam cameraEffect ["Internal", "Back", _playerId]; 
-		_cam attachTo [vehicle _selectedPlayer, [0,0,2]];
+		_cam cameraEffect ["Internal", "Back", _playerId];
+		if(vehicle _selectedPlayer == _selectedPlayer) then
+		{
+			_relativeEyePos = [(getPosASL _selectedPlayer) select 0 - (eyePos _selectedPlayer) select 0, 
+						   	   (getPosASL _selectedPlayer) select 1 - (eyePos _selectedPlayer) select 1,
+						       (getPosASL _selectedPlayer) select 2 - (eyePos _selectedPlayer) select 2];
+			_cam attachTo [vehicle _selectedPlayer, _relativeEyePos];
+		}
+		else
+		{
+			_cam attachTo [vehicle _selectedPlayer, _relativeEyePos];
+		};
+		
 		_cam camCommit 0;
 		
 		missionNamespace setVariable [format["%1%2", _processId, "cam"], _cam];
@@ -100,8 +111,17 @@ checkActiveCameraPosition =
 	{
 		if(_vehicle != vehicle _player) then
 		{
-			_vehicle = vehicle _player;
-			_cam attachTo [_vehicle, [0,0,2]];
+			if(vehicle _player == _player) then
+			{
+				_relativeEyePos = [(getPosASL _player) select 0 - (eyePos _player) select 0, 
+							   	   (getPosASL _player) select 1 - (eyePos _player) select 1,
+							       (getPosASL _player) select 2 - (eyePos _player) select 2];
+				_cam attachTo [vehicle _player, _relativeEyePos];
+			}
+			else
+			{
+				_cam attachTo [vehicle _player, _relativeEyePos];
+			};
 		};
 		sleep 1;
 		_oldCam = missionNamespace getVariable format["%1%2", _processId, "cam"];
