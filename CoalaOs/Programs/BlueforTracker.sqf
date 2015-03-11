@@ -6,7 +6,7 @@ fncoala_startbluefortracker =
 {
 	_width = 40;
 	_height = 25;
-	_programWindow = [1,1,_width,_height, _fileName] call fnCoala_DrawWindow;
+	_programWindow = [0,0,_width,_height, _fileName] call fnCoala_DrawWindow;
 	[_programWindow select 0, _processId, "processID"] call fnCoala_addVariableToControl;
 	
 	_map = ["RscMapControl", "", 0,0,0,0] call addCtrl;
@@ -16,20 +16,25 @@ fncoala_startbluefortracker =
 	["Draw", 
 	{
 		{
-			_this select 0 drawIcon 
-			[ 
-				"iconlogic", //zu finden unter Arma 3\Addons\ui_f_data.pbo\map\... einfach _ca.paa weglassen
-				[0,0,0,1], 
-				getPos _x, 
-				24, 
-				24, 
-				getDir _x, 
-				name _x, 
-				1, 
-				0.03, 
-				"TahomaB", 
-				"right" 
-			];
+			_searchFor = ["tf_rt1523g", "tf_rt1523g_big", "tf_rt1523g_sage", "tf_rt1523g_green", "tf_rt1523g_black", "tf_rt1523g_fabric",
+						  "tf_rt1523g_bwmod", "tf_rt1523g_big_bwmod", "tf_rt1523g_big_rhs", "tf_rt1523g_rhs"];
+			if(((playerSide == side _x) || (side player == side _x)) && (((backpack _x) in _searchFor) || ((commander vehicle _x == _x) && (vehicle _x != _x)))) then
+			{
+				_this select 0 drawIcon 
+				[ 
+					"iconman", //zu finden unter Arma 3\Addons\ui_f_data.pbo\map\... einfach _ca.paa weglassen
+					[0,0,1,1], 
+					getPos _x, 
+					24, 
+					24, 
+					getDir _x, 
+					name _x, 
+					1, 
+					0.03, 
+					"TahomaB", 
+					"right" 
+				];
+			};
 		} foreach allUnits;
 	}];
 };

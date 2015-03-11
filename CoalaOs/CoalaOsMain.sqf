@@ -52,5 +52,5 @@ if(!alive player) then
 foreach coala_ActivePrograms;
 
 deleteVehicle _laptop;
-coalaDisplay displayRemoveAllEventHandlers "MouseMoving";
-coalaDisplay displayRemoveAllEventHandlers "MouseButtonUp";
+//coalaDisplay displayRemoveAllEventHandlers "MouseMoving";
+//coalaDisplay displayRemoveAllEventHandlers "MouseButtonUp";

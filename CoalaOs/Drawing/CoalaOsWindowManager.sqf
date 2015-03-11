@@ -14,14 +14,14 @@ GUI_HEIGHT = 30;
 GUI_RIGHT = (GUI_WIDTH + GUI_LEFT) * GUI_GRID_W;
 GUI_BOTTOM = (GUI_HEIGHT + GUI_TOP) * GUI_GRID_H;
 
-(findDisplay 1000) displayAddEventHandler ["MouseMoving",
+coalaDisplay displayAddEventHandler ["MouseMoving",
 {
 	[_this]call checkAndMoveWindow;
 	coalaMouseX = _this select 1; 
 	coalaMouseY = _this select 2; 
 }];
 
-(findDisplay 1000) displayAddEventHandler ["MouseButtonUp",
+coalaDisplay displayAddEventHandler ["MouseButtonUp",
 {
 	isMouseDown = 0;
 	//hint "mouse up";
@@ -38,10 +38,10 @@ checkAndMoveWindow =
 		_width = missionNamespace getVariable format["%1%2", _toMove, "width"];
 		_height = missionNamespace getVariable format["%1%2", _toMove, "height"];
 		
-		_movementSpeed = 1 / diag_fps;
+		_movementSpeed = 0.36 / diag_fps;
 
 		_newX = (_pos select 0) + (coalaMouseX * _movementSpeed);
-		_newY = (_pos select 1) + (coalaMouseY * _movementSpeed);
+		_newY = (_pos select 1) + (coalaMouseY * (_movementSpeed * 1.28));
 		
 		if(_newX + _width > GUI_RIGHT) then
 		{
@@ -96,7 +96,7 @@ addCtrl =
 	_y = (_this select 3) * GUI_GRID_H + GUI_GRID_Y;
 	_w = (_this select 4) * GUI_GRID_W;
 	_h = (_this select 5) * GUI_GRID_H;
-	_toCreate = (findDisplay 1000) ctrlCreate [_type, coalaWindowId];
+	_toCreate = coalaDisplay ctrlCreate [_type, coalaWindowId];
 	coalaWindowId = coalaWindowId + 1;
 
 	if(_text != "") then
