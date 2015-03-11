@@ -1,13 +1,13 @@
 coalaVideoPlayer = nil;
 coalaLifeFeed = nil;
-coalaDisplay = nil;
+//coalaDisplay = nil; not working because of serialisation error...
 coalaConsole = nil;
 
 myDrinkLoad = 
 { 
 	private ["_display","_idc","_ctrl"]; 
 	_display = _this select 0; 
-	coalaDisplay = _display;
+	//coalaDisplay = _display;
 	_idc = -1; 
 	_ctrl = _display displayCtrl _idc; 
 	_this select 0 displayCtrl -1 ctrlEnable false;
