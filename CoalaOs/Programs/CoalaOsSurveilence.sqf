@@ -70,23 +70,26 @@ fncoala_startsurveilence =
 	{
 		_control = _this select 0;
 		_selectedIndex = lbCurSel _control;
-		_allDrones = missionNamespace getVariable format["%1%2", _control, "allDrones"];
-		_renderSurface = missionNamespace getVariable format["%1%2", _control, "renderSurface"];
-		_processId = missionNamespace getVariable format["%1%2", _control, "processId"];
-		_oldCam = missionNamespace getVariable format["%1%2", _processId, "cam"];
-		if(_oldCam != nil) then
+		if(_selectedIndex != -1) then
 		{
-			_oldCam cameraEffect ["terminate","back"]; 
-			camDestroy _oldCam;
+			_allDrones = missionNamespace getVariable format["%1%2", _control, "allDrones"];
+			_renderSurface = missionNamespace getVariable format["%1%2", _control, "renderSurface"];
+			_processId = missionNamespace getVariable format["%1%2", _control, "processId"];
+			_oldCam = missionNamespace getVariable format["%1%2", _processId, "cam"];
+			if(_oldCam != nil) then
+			{
+				_oldCam cameraEffect ["terminate","back"]; 
+				camDestroy _oldCam;
+			};
+			
+			_selectedDrone = (_allDrones select _selectedIndex);
+			_droneId = str(netId _selectedDrone);
+			
+			hint str(_renderSurface);
+			_renderSurface ctrlSetText "#(argb,512,512,1)r2t(" + _playerId + ",1)";
+			
+			[_selectedDrone, _processId, _renderSurface] call setActiveDrone;
 		};
-		
-		_selectedDrone = (_allDrones select _selectedIndex);
-		_droneId = str(netId _selectedDrone);
-		
-		hint str(_renderSurface);
-		_renderSurface ctrlSetText "#(argb,512,512,1)r2t(" + _playerId + ",1)";
-		
-		[_selectedDrone, _processId, _renderSurface] call setActiveDrone;
 	}];
 	
 	[_playerSelection, _processId] spawn keepDronesListUpdated;
