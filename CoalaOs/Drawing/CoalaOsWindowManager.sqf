@@ -38,8 +38,10 @@ checkAndMoveWindow =
 		_width = missionNamespace getVariable format["%1%2", _toMove, "width"];
 		_height = missionNamespace getVariable format["%1%2", _toMove, "height"];
 		
-		_newX = (_pos select 0) + (coalaMouseX * 0.004);
-		_newY = (_pos select 1) + (coalaMouseY * 0.0057);
+		_movementSpeed = 1 / diag_fps;
+
+		_newX = (_pos select 0) + (coalaMouseX * _movementSpeed);
+		_newY = (_pos select 1) + (coalaMouseY * _movementSpeed);
 		
 		if(_newX + _width > GUI_RIGHT) then
 		{

@@ -18,6 +18,10 @@ myDrinkLoad =
 	coalaConsole = ((_display) displayCtrl 1400);
 	coalaConsole ctrlSetPosition [100, 100, 0,0];
 	coalaConsole ctrlCommit 0;
+
+	//setModelTo: 
+	//_control3D = _display displayCtrl 1002;
+	//_control3D ctrlSetModel "\a3\Ui_f\objects\Compass.p3d";
 	
 	_keyDown = _display displayAddEventHandler ["KeyDown", 
 	{
