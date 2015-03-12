@@ -1,3 +1,9 @@
+/*
+	File: CoalaOsSurveilence.sqf
+	Creator: Niky
+	Date: 11.03.2015
+*/
+
 _parameters = _this select 0;
 _processId = _this select 1;
 _fileName = _this select 2;

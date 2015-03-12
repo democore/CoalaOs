@@ -4,15 +4,15 @@
 #define GUI_GRID_W	(0.025)
 #define GUI_GRID_H	(0.04)
 
-class MyDrink 
+class LaptopBase 
 { 
 	idd = 1000; 
 	movingEnable = 0; 
 	enableSimulation = 1; 
 	onLoad = "_this call myDrinkLoad; _this select 0 displayCtrl 1002 ctrlEnable false";
-	objects[] = {Can};
+	objects[] = {Laptop};
 	controls[] = {BGBox_1401, RscEdit_1400};
-	class Can 
+	class Laptop 
 	{ 
 		onObjectMoved = "systemChat str _this"; 
 		onLoad = "_this select 0 displayCtrl -1 ctrlEnable false";

@@ -1,3 +1,9 @@
+/*
+	File: CoalaOsHandler.sqf
+	Creator: Niky
+	Date: 11.03.2015
+*/
+
 coalaVideoPlayer = nil;
 coalaLifeFeed = nil;
 coalaDisplay = nil; //not working because of serialisation error...

@@ -1,3 +1,9 @@
+/*
+	File: CoalaOsWindowManager.sqf
+	Creator: Niky
+	Date: 11.03.2015
+*/
+
 GUI_GRID_W = 0.025;
 GUI_GRID_H = 0.04;
 GUI_GRID_X = 0;
@@ -24,7 +30,6 @@ coalaDisplay displayAddEventHandler ["MouseMoving",
 coalaDisplay displayAddEventHandler ["MouseButtonUp",
 {
 	isMouseDown = 0;
-	//hint "mouse up";
 }];
 
 checkAndMoveWindow = 

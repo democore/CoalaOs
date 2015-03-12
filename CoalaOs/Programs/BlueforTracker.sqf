@@ -1,3 +1,9 @@
+/*
+	File: CoalaOsBlueforTracker.sqf
+	Creator: Niky
+	Date: 11.03.2015
+*/
+
 _parameters = _this select 0;
 _processId = _this select 1;
 _fileName = _this select 2;
@@ -22,15 +28,15 @@ fncoala_startbluefortracker =
 			{
 				_this select 0 drawIcon 
 				[ 
-					"iconman", //zu finden unter Arma 3\Addons\ui_f_data.pbo\map\... einfach _ca.paa weglassen
-					[0,0,1,1], 
+					getText (configFile >> "CfgVehicles" >> typeOf (vehicle _x) >> "icon"),//"iconman", //zu finden unter Arma 3\Addons\ui_f_data.pbo\map\... einfach _ca.paa weglassen
+					[0,0,0.7,0.7], 
 					getPos _x, 
 					24, 
 					24, 
 					getDir _x, 
 					name _x, 
 					1, 
-					0.03, 
+					0.05, 
 					"TahomaB", 
 					"right" 
 				];

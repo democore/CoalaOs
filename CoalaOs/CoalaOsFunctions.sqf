@@ -1,3 +1,8 @@
+/*
+	File: CoalaOsFuncitons.sqf
+	Creator: Niky
+	Date: 11.03.2015
+*/
 
 fncoala_excecuteCommandFromNonConsole = 
 {
@@ -265,7 +270,6 @@ fncoala_removeTopLine =
 		};
 	}
 	foreach _arr;
-	//hint toString _lineBreaks;
 	ctrlSetText[2001, (toString _lineBreaks)];
 	cutText [(toString _lineBreaks),"PLAIN",2];
 };
@@ -279,32 +283,26 @@ fncoala_getParameters =
 	_lastFoundIndex = 0;
 	_isFirst = true;
 	_parameters = [];
-	//hint format["%1", count _arr];
 	while{_i < count _arr} do
 	{
-		//hint format["cur: %1", _arr select i];
 		if(str (_arr select _i) == "32") then
 		{
-			//hint "found spacer";
 			//leerzeichen gefunden -> parameter
 			if(_isFirst) then
 			{
 				_isFirst = false;
 				_lastFoundIndex = _i;
 				_parameters set [count _parameters, toString(_arr select[0, _i])];
-				//hint format["found: %1",toString (_parameters select 0)];
 			}
 			else
 			{
 				_parameters set [count _parameters, toString(_arr select[_lastFoundIndex + 1, _i - _lastFoundIndex - 1])];
 				_lastFoundIndex = _i;
-				//hint format["found: %1",toString (_parameters select 1)];
 			};
 		};
 		if((_i + 1 == count _arr) && count _parameters > 0) then
 		{
 			_parameters set [count _parameters, toString(_arr select[_lastFoundIndex + 1, _i - _lastFoundIndex])];
-			//hint format["found: #%1#",toString (_parameters select 1)];
 		};
 		
 		_i = _i + 1;

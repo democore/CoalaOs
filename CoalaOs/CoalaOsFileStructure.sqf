@@ -1,3 +1,9 @@
+/*
+	File: CoalaOsFileStructure.sqf
+	Creator: Niky
+	Date: 11.03.2015
+*/
+
 coala_FileSystem = [["C:", 0, 0, [1,2, 17, 18, 19, 20], 1], 
 					["Arma", 1, 0, [6,7,10,14,15,16], 1], 
 					["Windows", 2, 0, [5,8,9], 1], 
@@ -61,7 +67,6 @@ fncoala_getSubFolders =
 		_folders set [count _folders, _curFolder];
 	}forEach _subFolderIds;
 	
-	//hint str(_folders);
 	_folders
 };
 
@@ -92,7 +97,6 @@ fncoala_getCompleteFolderName =
 	_folderId = _this select 0;
 	_folder = coala_FileSystem select _folderId;
 	_fullPath = _folder select 0;
-	hint format["id: %1", _fullPath];
 	while{_folder select 1 != _folder select 2} do
 	{
 		_parentFolder = coala_FileSystem select (_folder select 2);

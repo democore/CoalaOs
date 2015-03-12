@@ -1,3 +1,9 @@
+/*
+	File: CoalaOsPlayer.sqf
+	Creator: Niky
+	Date: 11.03.2015
+*/
+
 _file = _this select 0;
 _processId = _this select 1;
 

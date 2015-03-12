@@ -1,3 +1,9 @@
+/*
+  File: CoalaOsMain.sqf
+  Creator: Niky
+  Date: 11.03.2015
+*/
+
 /*    ___..._           _...___
    /'--.._ `'-="""=-'` _..--'\
    |   ~. )  _     _  ( .~   |
@@ -29,10 +35,10 @@ _laptop attachTo [player, [0, 0.8, 1.5] ];
 _laptop setDir (180);
 hideObject _laptop;
 
-_ok = createDialog "MyDrink";
+_ok = createDialog "LaptopBase";
 sleep 0.01;
 closeDialog 2;
-_ok = createDialog "MyDrink";
+_ok = createDialog "LaptopBase";
 _CRLF = toString [0x0D, 0x0A];
 
 _welcomeText = format["Coala OS [Version 1.34.483]%1Copyright (c) 2015 Legion Corporation. All rights reserved. jk.%1%1%2 ", _CRLF, coala_currentFolderName];
