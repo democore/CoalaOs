@@ -31,12 +31,12 @@ fnCoala_debug =
 waitUntil { scriptDone coalaFunctionsInit && scriptDone coalaHandlerInit && scriptDone coalaFileInit };
 
 _laptop = "Land_Laptop_unfolded_F" createVehicle position player;
-_laptop attachTo [player, [0, 0.8, 1.5] ];
+_laptop attachTo [player, [0,0.3,0], "head"];
 _laptop setDir (180);
 hideObject _laptop;
 
 _ok = createDialog "LaptopBase";
-sleep 0.01;
+sleep 0.10;
 closeDialog 2;
 _ok = createDialog "LaptopBase";
 _CRLF = toString [0x0D, 0x0A];

@@ -11,7 +11,7 @@ _cam = nil;
 
 fncoala_startbodycam = 
 {
-	missionNamespace setVariable [format["%1%2", _processId, "cam"], nil];
+	missionNamespace setVariable [format["%1%2", _processId, "cam"], "none"];
 	
 	_programWindow = [1,1,30,15, _fileName] call fnCoala_DrawWindow;
 	[_programWindow select 0, _processId, "processID"] call fnCoala_addVariableToControl;
@@ -29,25 +29,32 @@ fncoala_startbodycam =
 		_renderSurface = missionNamespace getVariable format["%1%2", _control, "renderSurface"];
 		_processId = missionNamespace getVariable format["%1%2", _control, "processId"];
 		_oldCam = missionNamespace getVariable format["%1%2", _processId, "cam"];
-		if(_oldCam != nil) then
-		{
-			_oldCam cameraEffect ["terminate","back"]; 
-			camDestroy _oldCam;
-		};
+		_programWindow = missionNamespace getVariable format["%1%2", _control, "programWindow"];
 		
 		_selectedPlayer = (_allPlayers select _selectedIndex) select 0;
-		_playerId = str(netId _selectedPlayer);
 		
-		hint str(_renderSurface);
-		_renderSurface ctrlSetText "#(argb,512,512,1)r2t(" + _playerId + ",1)";
-		
-		_cam = "camera" camCreate [0,0,0]; 
-		_cam cameraEffect ["Internal", "Back", _playerId];
-		_cam attachTo [vehicle _selectedPlayer, [0.15,0.38,1.47]];
-		_cam camCommit 0;
-		
-		missionNamespace setVariable [format["%1%2", _processId, "cam"], _cam];
-		[_selectedPlayer, _cam, _processId] spawn checkActiveCameraPosition;
+		//gab schon cam
+		if(str(_oldCam) != str("none")) then
+		{
+			_playerId = str(netId _selectedPlayer);
+			_oldCam attachTo [vehicle _selectedPlayer, [-0.05,0.1,0.08], "Head"];
+			_oldCam camCommit 0;
+			[_selectedPlayer, _oldCam, _processId] spawn checkActiveCameraPosition;
+		}
+		else
+		{
+			//gab noch keine cam
+			_playerId = str(netId _selectedPlayer);
+			_renderSurface ctrlSetText "#(argb,512,512,1)r2t(" + str(_processId) + ",1)";
+			
+			_cam = "camera" camCreate [0,0,0]; 
+			_cam cameraEffect ["Internal", "Back", str(_processId)];
+			_cam attachTo [vehicle _selectedPlayer, [-0.05,0.1,0.08], "Head"];
+			_cam camCommit 0;
+			missionNamespace setVariable [format["%1%2", _processId, "cam"], _cam];
+			missionNamespace setVariable [format["%1%2", _processId, "playerId"], _playerId];
+			[_selectedPlayer, _oldCam, _processId, _playerId] spawn checkActiveCameraPosition;
+		};
 	}];
 	
 	_allPlayers = []; 
@@ -63,6 +70,7 @@ fncoala_startbodycam =
 	missionNamespace setVariable [format["%1%2", _playerSelection, "processId"], _processId];
 	missionNamespace setVariable [format["%1%2", _processId, "programActive"], "1"];
 	missionNamespace setVariable [format["%1%2", _playerSelection, "renderSurface"], _renderSurface];
+	missionNamespace setVariable [format["%1%2", _playerSelection, "programWindow"], _programWindow];
 	_playerSelection lbSetCurSel 0;
 	
 	[_processId, _playerSelection] spawn keepListUpdated;
@@ -101,16 +109,14 @@ checkActiveCameraPosition =
 	_processId = _this select 2;
 	_vehicle = vehicle _player;
 	
-	_oldCam = missionNamespace getVariable format["%1%2", _processId, "cam"];
-	while { _cam == _oldCam } do
+	while {(missionNamespace getVariable format["%1%2", _processId, "programActive"] != "0")} do
 	{
 		if(_vehicle != vehicle _player) then
 		{
-			_cam attachTo [vehicle _player, [0.15,0.38,1.47]];
+			_cam attachTo [vehicle _player, [-0.05,0.1,0.08], "Head"];
 			_vehicle = vehicle _player;
 		};
 		sleep 1;
-		_oldCam = missionNamespace getVariable format["%1%2", _processId, "cam"];
 	};
 };
 
