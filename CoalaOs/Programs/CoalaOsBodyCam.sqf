@@ -19,6 +19,9 @@ fncoala_startbodycam =
 	_renderSurface = ["RscPicture", "", 0,0,0,0] call addCtrl;
 	[_programWindow select 0, _renderSurface, [0,0,30,15 - 1.5]] call fnCoala_addControlToWindow;
 	
+	_direction = ["RscText", "", 0,0,0,0] call addCtrl;
+	[_programWindow select 0, _direction, [11,0,4,1]] call fnCoala_addControlToWindow;
+	
 	_playerSelection = ["RscCombo", "", 0,0,0,0] call addCtrl;
 	[_programWindow select 0, _playerSelection, [0,0,10,1]] call fnCoala_addControlToWindow;
 	_playerSelection ctrlAddEventHandler ["LBSelChanged",
@@ -30,6 +33,7 @@ fncoala_startbodycam =
 		_processId = missionNamespace getVariable format["%1%2", _control, "processId"];
 		_oldCam = missionNamespace getVariable format["%1%2", _processId, "cam"];
 		_programWindow = missionNamespace getVariable format["%1%2", _control, "programWindow"];
+		_direction = missionNamespace getVariable format["%1%2", _control, "direction"];
 		
 		_selectedPlayer = (_allPlayers select _selectedIndex) select 0;
 		
@@ -39,7 +43,7 @@ fncoala_startbodycam =
 			_playerId = str(netId _selectedPlayer);
 			_oldCam attachTo [vehicle _selectedPlayer, [-0.05,0.1,0.08], "Head"];
 			_oldCam camCommit 0;
-			[_selectedPlayer, _oldCam, _processId] spawn checkActiveCameraPosition;
+			[_selectedPlayer, _oldCam, _processId, _direction] spawn checkActiveCameraPosition;
 		}
 		else
 		{
@@ -53,7 +57,7 @@ fncoala_startbodycam =
 			_cam camCommit 0;
 			missionNamespace setVariable [format["%1%2", _processId, "cam"], _cam];
 			missionNamespace setVariable [format["%1%2", _processId, "playerId"], _playerId];
-			[_selectedPlayer, _oldCam, _processId, _playerId] spawn checkActiveCameraPosition;
+			[_selectedPlayer, _oldCam, _processId, _direction] spawn checkActiveCameraPosition;
 		};
 	}];
 	
@@ -71,6 +75,7 @@ fncoala_startbodycam =
 	missionNamespace setVariable [format["%1%2", _processId, "programActive"], "1"];
 	missionNamespace setVariable [format["%1%2", _playerSelection, "renderSurface"], _renderSurface];
 	missionNamespace setVariable [format["%1%2", _playerSelection, "programWindow"], _programWindow];
+	missionNamespace setVariable [format["%1%2", _playerSelection, "direction"], _direction];
 	_playerSelection lbSetCurSel 0;
 	
 	[_processId, _playerSelection] spawn keepListUpdated;
@@ -107,6 +112,7 @@ checkActiveCameraPosition =
 	_player = _this select 0;
 	_cam = _this select 1;
 	_processId = _this select 2;
+	_directionControl = _this select 3;
 	_vehicle = vehicle _player;
 	
 	while {(missionNamespace getVariable format["%1%2", _processId, "programActive"] != "0")} do
@@ -116,6 +122,7 @@ checkActiveCameraPosition =
 			_cam attachTo [vehicle _player, [-0.05,0.1,0.08], "Head"];
 			_vehicle = vehicle _player;
 		};
+		_directionControl ctrlSetText format["Dir: %1", str(floor(getDir _vehicle))];
 		sleep 1;
 	};
 };

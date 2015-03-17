@@ -4,7 +4,7 @@
 	Date: 11.03.2015
 */
 
-coala_FileSystem = [["C:", 0, 0, [1,2, 17, 18, 19, 20], 1], 
+coala_FileSystem = [["C:", 0, 0, [1,2, 17, 18, 19, 20, 21], 1], 
 					["Arma", 1, 0, [6,7,10,14,15,16], 1], 
 					["Windows", 2, 0, [5,8,9], 1], 
 					["image.jpg", 3, 0, [], 0, MISSION_ROOT + "CoalaOs\Images\617x.jpg", "image"], 
@@ -24,7 +24,8 @@ coala_FileSystem = [["C:", 0, 0, [1,2, 17, 18, 19, 20], 1],
 					["surveilence.exe", 17, 0, [], 0, "CoalaOs\Programs\CoalaOsSurveilence.sqf", "exe", "surveilence"],
 					["frontcam.exe", 18, 0, [], 0, "CoalaOs\Programs\CoalaOsFrontcam.sqf", "exe", "frontcam"],
 					["Bodycam.exe", 19, 0, [], 0, "CoalaOs\Programs\CoalaOsBodyCam.sqf", "exe", "bodycam"],
-					["BlueforTracker.exe", 20, 0, [], 0, "CoalaOs\Programs\BlueforTracker.sqf", "exe", "bluefortracker"]];
+					["BlueforTracker.exe", 20, 0, [], 0, "CoalaOs\Programs\BlueforTracker.sqf", "exe", "bluefortracker"],
+					["Chatty.exe", 21, 0, [], 0, "CoalaOs\Programs\CoalaOsChatty.sqf", "exe", "Chatty"]];
 					
 coala_ActivePrograms = [];
 coala_currentFolderId = 0;

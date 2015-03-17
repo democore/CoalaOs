@@ -48,6 +48,30 @@ fncoala_startbluefortracker =
 			};
 		} foreach allUnits;
 	}];
+	_map ctrlAddEventHandler
+	["MouseButtonDblClick",
+	{
+		//TODO: Find a way to add markers that can be deleted by user on map....... cannot find a solution right now..
+		
+		/*_WorldCoord = (_this select 0) posScreenToWorld [_this select 2,_this select 3];
+		hint format["%1 %2", str(_WorldCoord select 0), str(_WorldCoord select 1)];
+		_marker = createMarker [str(_WorldCoord), _WorldCoord];
+		_marker setMarkerShape "ICON";
+		_marker setMarkerBrush "Solid";
+		_marker setMarkerColor "ColorRed";
+		_marker setMarkerType "DOT";
+		
+		_aMarker = vehicleVarName _x;
+		_aMarker = createMarkerLocal [_aMarker,_WorldCoord];
+		_aMarker setMarkerShapeLocal "ICON";
+		_aMarker setMarkerTypeLocal "mil_dot";
+		//_aMarker setMarkerTextLocal _unitName;
+		_aMarker setMarkerSizeLocal [1,1];
+		//_aMarker setmarkerDirLocal (getdir _x);
+		_aMarker setMarkerPosLocal (_WorldCoord);
+		//_aMarker setMarkerTextLocal _unitName;
+		_aMarker setMarkerColorLocal "ColorGreen";*/
+	}];
 };
 
 fncoala_stopbluefortracker = 

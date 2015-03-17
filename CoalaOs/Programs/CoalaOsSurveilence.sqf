@@ -103,8 +103,13 @@ fncoala_startsurveilence =
 	_textHeight = ["RscText", "100m", 0,0,0,0] call addCtrl;
 	[_programWindow select 0, _textHeight, [4.4,1.1,3,1]] call fnCoala_addControlToWindow;
 	
+	_textDirection = ["RscText", "0", 0,0,0,0] call addCtrl;
+	[_programWindow select 0, _textDirection, [7.8,1.1,4,1]] call fnCoala_addControlToWindow;
+	
 	missionNamespace setVariable [format["%1%2", _playerSelection, "renderSurface"], _renderSurface];
 	missionNamespace setVariable [format["%1%2", _playerSelection, "processId"], _processId];
+	missionNamespace setVariable [format["%1%2", _processId, "_textHeight"], _textHeight];
+	missionNamespace setVariable [format["%1%2", _processId, "_textDirection"], _textDirection];
 	
 	[_programWindow select 0, _processId, "processID"] call fnCoala_addVariableToControl;
 	
@@ -166,6 +171,8 @@ setActiveDrone =
 	_btnWarm = missionNamespace getVariable format["%1%2", _processId, "_btnWarm"];
 	_btnPlus = missionNamespace getVariable format["%1%2", _processId, "_btnPlus"];
 	_btnMinus = missionNamespace getVariable format["%1%2", _processId, "_btnMinus"];
+	_textHeight = missionNamespace getVariable format["%1%2", _processId, "_textHeight"];
+	_textDirection = missionNamespace getVariable format["%1%2", _processId, "_textDirection"];
 	
 	missionNamespace setVariable [format["%1%2", _processId, "cam"], _cam];
 	missionNamespace setVariable [format["%1%2", _processId, "_cam"], _cam];
@@ -184,7 +191,7 @@ setActiveDrone =
 	missionNamespace setVariable [format["%1%2", _camId, "_uav"], _uav];
 	
 	missionNamespace setVariable [format["%1%2", _processId, "_doMovement"], "true"];
-	[_uav, _cam, _processId, _camId] spawn doCamMovement;
+	[_uav, _cam, _processId, _camId, _textDirection, _textHeight] spawn doCamMovement;
 };
 
 keepDronesListUpdated = 
@@ -219,7 +226,10 @@ doCamMovement =
 	_cam = _this select 1;
 	_procId = _this select 2;
 	_id = _this select 3;
+	_textDirection = _this select 4;
+	_textHeight = _this select 5;
 	_isAllowed = "true";
+	
 	while{_isAllowed == "true" || str(_isAllowed) == "<null>"} do
 	{
 		_dir = (_uav selectionPosition "PiP0_pos") vectorFromTo (_uav selectionPosition "PiP0_dir"); 
@@ -232,6 +242,8 @@ doCamMovement =
 			_cam camCommit 0;
 		};
 		sleep 0.1;
+		_textHeight ctrlSetText format["%1m", floor(getPos _uav select 2)];
+		_textDirection ctrlSetText format["Dir: %1", floor(getDir _uav)];
 		_isAllowed = missionNamespace getVariable format["%1%2", _procId, "_doMovement"];
 	};	
 	
