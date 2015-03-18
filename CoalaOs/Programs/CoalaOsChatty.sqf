@@ -132,7 +132,8 @@ fnChatty_receiveMessages =
 
 fncoala_stopChatty = 
 {
-	missionNamespace setVariable [format["%1%2", _this select 0, "ProcessRunning"], "0"];
+	_procId = _this select 0;
+	missionNamespace setVariable [format["%1%2", _procId, "ProcessRunning"], "0"];
 };
 call fncoala_startChatty;
 
