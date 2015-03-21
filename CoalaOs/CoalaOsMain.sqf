@@ -21,6 +21,7 @@
 coalaFunctionsInit = execVM "CoalaOs\CoalaOsFunctions.sqf";
 coalaHandlerInit = execVM "CoalaOs\CoalaOsHandler.sqf";
 coalaFileInit = execVM "CoalaOs\CoalaOsFileStructure.sqf";
+coalaDefaultWebPage = "http://www.justdev.de/arma/index.html";
 coalaDebug = true;
 
 fnCoala_debug = 

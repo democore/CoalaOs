@@ -325,7 +325,7 @@ fnCoala_DrawDesktop =
 	{
 		_width = 60;
 		_height = 25;
-		_standartURL = "http://www.justdev.de/arma/index.html";
+		_standartURL = coalaDefaultWebPage;
 		_newWindow = [-9,-4,_width,_height, "Browser"] call fnCoala_DrawWindow;
 		
 		_browserCtrl = ["RscHTML", "", 0,0,0,0] call addCtrl;
