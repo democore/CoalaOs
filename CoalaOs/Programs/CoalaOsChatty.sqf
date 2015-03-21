@@ -1,6 +1,11 @@
+/*
+	File: CoalaOsChatty.sqf
+	Creator: Niky
+	Date: 18.03.2015
+*/
+
 _processId = _this select 1;
 _fileName = _this select 2;
-lastTextMessages = [];
 
 fncoala_startChatty = 
 {
@@ -14,13 +19,14 @@ fncoala_startChatty =
 	missionNamespace setVariable [format["%1%2", _textInput, "_processId"], _processId];
 	_textInput ctrlAddEventHandler ["KeyDown",
 	{
-		hint str(_this select 1);
+		//check pressed key -> 28 = Enter
 		if(_this select 1 == 28) then
 		{
 			_thisControl = _this select 0;
 			_processId = missionNamespace getVariable format["%1%2", _thisControl, "_processId"];
 			_input = missionNamespace getVariable format["%1%2", _processId, "_textInput"];
 			
+			//Check if there is any text in the input
 			_len = count (toArray (ctrlText _input));
 			if(_len > 0) then
 			{
@@ -47,11 +53,12 @@ fncoala_startChatty =
 		_len = count (toArray (ctrlText _input));
 		if(_len > 0) then
 		{
-			[[[ctrlText _input, name player], 
+			_front = format["%1 %2", name player, call fnCoala_getTimeString];
+			[[[_front, ctrlText _input], 
 			{
-				_lastTextMessages = missionNamespace getVariable ["_lastTextMessages", []];
-				_lastTextMessages = _lastTextMessages + [format["%1: %2", _this select 1, _this select 0]];
-				missionNamespace setVariable ["_lastTextMessages", _lastTextMessages];
+				_lastTextMessages = missionNamespace getVariable ["lastTextMessages", []];
+				_lastTextMessages = _lastTextMessages + [format["%1: %2", _this select 0, _this select 1]];
+				missionNamespace setVariable [lastTextMessages, _lastTextMessages];
 			}
 			], "BIS_fnc_spawn", true, false, false] call BIS_fnc_MP;
 			_input ctrlSetText "";
@@ -65,11 +72,14 @@ fncoala_startChatty =
 	missionNamespace setVariable [format["%1%2", _processId, "_textInput"], _textInput];
 	missionNamespace setVariable [format["%1%2", _processId, "ProcessRunning"], "1"];
 	
+	//draw the text fields to show the received messages
 	[_width, _height, _processId] call fnChatt_drawTextFields;
-	[] call fnChatty_reDisplayKeptMessages;
+
+	//start the receiver for the textmessages
 	[_processId] spawn fnChatty_receiveMessages;
 };
 
+//create the single textfield, representing the received messages
 fnChatt_drawTextFields = 
 {
 	_width = _this select 0;
@@ -98,6 +108,7 @@ fnChatt_drawTextFields =
 	missionNamespace setVariable [format["%1%2", _processId, "maxIndex"], _index];
 };
 
+//push every message in the textbox above it. 
 fnChatte_pushMessagesUp = 
 {
 	_maxIndex = missionNamespace getVariable format["%1%2", _processId, "maxIndex"];
@@ -112,28 +123,11 @@ fnChatte_pushMessagesUp =
 		_index = _index - 1;
 	};
 };
-
-fnChatty_reDisplayKeptMessages = 
-{
-	_keptMessages = missionNamespace getVariable ["_keptMessages", []];
-	while {count _keptMessages > 0} do
-	{
-		_message = _keptMessages select 0;
-		_maxIndex = missionNamespace getVariable format["%1%2", _processId, "maxIndex"];
-		call fnChatte_pushMessagesUp;
-		_textField = missionNamespace getVariable format["%1_textField%2", _processId, _maxIndex - 1];
-		_textField ctrlSetText _message;
-		
-		_keptMessages = _keptMessages - [_message];
-		sleep 0.0005;
-	};
-};
-
 fnChatty_receiveMessages = 
 {
 	_processId = _this select 0;
 	_processRunning = missionNamespace getVariable format["%1%2", _processId, "ProcessRunning"];
-	_lastTextMessages = missionNamespace getVariable ["_lastTextMessages", []];
+	_lastTextMessages = missionNamespace getVariable ["lastTextMessages", []];
 	while {_processRunning == "1"} do
 	{
 		if(count _lastTextMessages > 0) then
@@ -146,11 +140,11 @@ fnChatty_receiveMessages =
 			
 			
 			_lastTextMessages = _lastTextMessages - [_message];
-			missionNamespace setVariable ["_lastTextMessages", _lastTextMessages];
-			
-			_keptMessages = missionNamespace getVariable ["_keptMessages", []];
-			_keptMessages = _keptMessages + [_message];
-			missionNamespace setVariable ["_keptMessages", _keptMessages];
+			missionNamespace setVariable [lastTextMessages, _lastTextMessages];
+		}
+		else
+		{
+			_lastTextMessages = missionNamespace getVariable ["lastTextMessages", []];
 		};
 		sleep 0.2;
 		_lastTextMessages = missionNamespace getVariable ["_lastTextMessages", []];
@@ -160,7 +154,8 @@ fnChatty_receiveMessages =
 
 fncoala_stopChatty = 
 {
-	missionNamespace setVariable [format["%1%2", _this select 0, "ProcessRunning"], "0"];
+	_procId = _this select 0;
+	missionNamespace setVariable [format["%1%2", _procId, "ProcessRunning"], "0"];
 };
 call fncoala_startChatty;
 

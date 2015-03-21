@@ -269,35 +269,41 @@ fnCoala_DrawTaskBar =
 	[_taskBarTime] spawn fnCoala_drawTime;
 };
 
+fnCoala_getTimeString = 
+{
+	_hour = floor daytime; 
+	_strHour = str(_hour);
+	if(_hour < 10) then
+	{
+		_strHour = format["0%1", _hour];
+	};
+	
+	_minute = floor ((daytime - _hour) * 60); 
+	_strMinute = str(_minute);
+	if(_minute < 10) then
+	{
+		_strMinute = format["0%1", _minute];
+	};
+	
+	_second = floor (((((daytime) - (_hour))*60) - _minute)*60); 
+	_strSecond = str(_second);
+	if(_second < 10) then
+	{
+		_strSecond = format["0%1", _second];
+	};
+	
+	_time24 = format ["%1:%2:%3",_strHour,_strMinute,_strSecond];
+	_time24
+}
+
 //Draws the Ingame time on the bottom right Corner
 fnCoala_drawTime = 
 {
 	_timeControl = _this select 0;
 	while { (dialog) and (alive player) } do
 	{
-		_hour = floor daytime; 
-		_strHour = str(_hour);
-		if(_hour < 10) then
-		{
-			_strHour = format["0%1", _hour];
-		};
 		
-		_minute = floor ((daytime - _hour) * 60); 
-		_strMinute = str(_minute);
-		if(_minute < 10) then
-		{
-			_strMinute = format["0%1", _minute];
-		};
-		
-		_second = floor (((((daytime) - (_hour))*60) - _minute)*60); 
-		_strSecond = str(_second);
-		if(_second < 10) then
-		{
-			_strSecond = format["0%1", _second];
-		};
-		
-		_time24 = format ["%1:%2:%3",_strHour,_strMinute,_strSecond];
-		_timeControl ctrlSetText _time24;
+		_timeControl ctrlSetText (call fnCoala_getTimeString));
 		sleep 1;
 	};
 };
