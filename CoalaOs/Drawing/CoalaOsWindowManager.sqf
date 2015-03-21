@@ -323,25 +323,25 @@ fnCoala_DrawDesktop =
 	_browser = [GUI_LEFT + 14, GUI_TOP + 2, "CoalaOs\Images\browser.paa", "Browser", 0] call fnCoala_AddDesktopIcon;
 	(_browser select 0) ctrlAddEventHandler ["MouseButtonDblClick",
 	{
-		_width = 40;
-		_height = 20;
+		_width = 60;
+		_height = 25;
 		_standartURL = "http://www.justdev.de/arma/index.html";
-		_newWindow = [0,0,_width,_height, "Browser"] call fnCoala_DrawWindow;
+		_newWindow = [-9,-4,_width,_height, "Browser"] call fnCoala_DrawWindow;
 		
 		_browserCtrl = ["RscHTML", "", 0,0,0,0] call addCtrl;
 		_browserCtrl ctrlSetBackgroundColor [0,0,0,1];
 		[_newWindow select 0, _browserCtrl, 
-		[0,1.5,_width,_height - 1.5]] call fnCoala_addControlToWindow;
+		[0.2,1.7,_width - 0.2,_height - 3]] call fnCoala_addControlToWindow;
 		
 		_browserCtrl htmlLoad _standartURL;
 		
 		_url = ["RscEdit", _standartURL, 0,0,0,0] call addCtrl;
 		[_newWindow select 0, _url, 
-		[0.2,0,_width - 5.5,1.5]] call fnCoala_addControlToWindow;
+		[0.4,0.2,_width - 5.5,1.5]] call fnCoala_addControlToWindow;
 		
 		_changeSiteButton = ["RscButton", "Los", 0,0,0,0] call addCtrl;
 		[_newWindow select 0, _changeSiteButton, 
-		[_width - 5,0,5,1.5]] call fnCoala_addControlToWindow;
+		[_width - 5,0.2,5,1.5]] call fnCoala_addControlToWindow;
 		_changeSiteButton ctrlAddEventHandler ["MouseButtonDown", 
 		{
 			_browserCtrl = missionNamespace getVariable format["%1browser", str(_this select 0)];
