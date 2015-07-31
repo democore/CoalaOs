@@ -12,8 +12,19 @@ fncoala_startbluefortracker =
 {
 	_width = 40;
 	_height = 25;
-	_programWindow = [0,0,_width,_height, _fileName] call fnCoala_DrawWindow;
+	_x = 1;
+	_y = 1;
+	if(count _parameters > 2) then
+	{
+		_x = parseNumber (_parameters select 2);
+		_y = parseNumber (_parameters select 3);
+	};
+	_programWindow = [_x,_y,_width,_height, _fileName] call fnCoala_DrawWindow;
 	[_programWindow select 0, _processId, "processID"] call fnCoala_addVariableToControl;
+	
+	_pos = ctrlposition (_programWindow select 0);
+	_prog = ([_processId] call fncoala_getProgramEntryById);
+	_prog set [7, [(_pos select 0) / GUI_GRID_W + GUI_GRID_X, (_pos select 1) / GUI_GRID_H + GUI_GRID_Y]];
 	
 	_map = ["RscMapControl", "", 0,0,0,0] call addCtrl;
 	[_programWindow select 0, _map, [0,0,_width,_height - 1.5]] call fnCoala_addControlToWindow;

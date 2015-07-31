@@ -90,6 +90,11 @@ checkAndMoveWindow =
 				[_x] call fnCoala_FocusWindow;
 			};
 		} foreach _coalaActiveControl;
+		
+		
+		_processId = [_toMove, "processID"] call fnCoala_getVariableToControl;
+		_prog = ([_processId] call fncoala_getProgramEntryById);
+		_prog set [7, [_newX / GUI_GRID_W + GUI_GRID_X, _newY / GUI_GRID_H + GUI_GRID_Y]];
 	};
 };
 
@@ -257,7 +262,7 @@ fnCoala_AddDesktopIcon =
 //Draws the Taskbar
 fnCoala_DrawTaskBar = 
 {	
-	_taskBar = ["RscBackground", "", GUI_LEFT, GUI_HEIGHT - 6.4, GUI_WIDTH, 1.5] call addCtrl;
+	_taskBar = ["RscBackground", "", GUI_LEFT + 0.01, GUI_HEIGHT - 6.3, GUI_WIDTH + 0.1, 1.5] call addCtrl;
 	_r = 24;
 	_g = 31;
 	_b = 28;
@@ -370,6 +375,7 @@ fnCoala_CloseWindow =
 	_control = _this select 0;
 	_window = [_control] call fnCoala_getWindowFromControl;
 	
+	
 	_processId = [_window select 0, "processID"] call fnCoala_getVariableToControl;
 	if(str(_processId) != "<null>") then
 	{
@@ -393,6 +399,7 @@ fnCoala_DrawWindow =
 {
 	_width = 20;
 	_height = 12;
+	
 	if(count _this > 2) then
 	{
 		_width = _this select 2;
@@ -401,6 +408,7 @@ fnCoala_DrawWindow =
 			_height = _this select 3;
 		};
 	};
+	
 	_windowBackground = ["RscPicture", 
 	MISSION_ROOT + "CoalaOs\Images\windowBackground.jpg", 
 	(_this select 0), 

@@ -15,7 +15,7 @@ class LaptopBase
 	class Laptop 
 	{ 
 		onObjectMoved = "systemChat str _this"; 
-		onLoad = "_this select 0 displayCtrl -1 ctrlEnable false";
+		//onLoad = "_this select 0 displayCtrl -1 ctrlEnable false";
 		idc = 1002; 
 		type = 82; 
 		model = "\A3\Structures_F\Items\Electronics\Laptop_unfolded_F.p3d"; 

@@ -21,6 +21,7 @@ fncoala_excecuteCommand =
 {
 	//[command : String] call fnc_excecuteCommand;
 	_cmd = _this select 0;
+	_commandWithoutParam = _cmd;
 	_completeCmd = _cmd;
 	_returned = [];
 	
@@ -28,6 +29,7 @@ fncoala_excecuteCommand =
 	if(count _parameters > 0) then
 	{
 		_cmd = _parameters select 0;
+		_commandWithoutParam = format["%1 %2", _parameters select 0, _parameters select 1];
 	};
 	_commands = ["cd", "ls", "time", "help", "open", "processes", "close"];
 	_commandHelp = ["cd			- change active directory 'cd [foldername]'",
@@ -117,7 +119,7 @@ fncoala_excecuteCommand =
 					if(_file select 6 == "exe") then
 					{
 						_handle = [_parameters, count coala_ActivePrograms, _file select 0] execVM (format["%1", _file select 5]);
-						coala_ActivePrograms set [count coala_ActivePrograms, [_handle, count coala_ActivePrograms, format["%1", _file select 0], format["%1", _file select 1], format["%1", _file select 7]]];
+						coala_ActivePrograms set [count coala_ActivePrograms, [_handle, count coala_ActivePrograms, format["%1", _file select 0], format["%1", _file select 1], format["%1", _file select 7], _file, [_commandWithoutParam]]];
 					};
 					if(_file select 6 == "image") then
 					{
@@ -240,6 +242,19 @@ fncoala_excecuteCommand =
 	_returned
 };
 
+fncoala_getProgramEntryById = 
+{	
+	_returner = [];
+	{
+		if(str(_x select 1) == str(_this select 0)) then
+		{
+			_returner = _x;
+		};
+	}
+	foreach coala_ActivePrograms;
+	
+	_returner
+};
 
 fncoala_removeTopLine = 
 {
