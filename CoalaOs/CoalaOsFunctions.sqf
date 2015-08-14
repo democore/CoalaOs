@@ -53,6 +53,7 @@ fncoala_excecuteCommand =
 		foreach coala_ActivePrograms;
 		
 		_attach = format["%1Open processes: %2%1%1%3", _CRLF, _programs, coala_currentFolderName];
+		_returned = _attach;
 		ctrlSetText [1400, format["%1%2 ", _input, _attach]];
 	};
 	if(_cmd == "close") then
@@ -80,17 +81,20 @@ fncoala_excecuteCommand =
 				call compile format["[%2] call fncoala_stop%1", _foundArr select 4, str(_id)];
 				
 				_attach = format["%1Process %3 was closed.%1%1%2", _CRLF, coala_currentFolderName, _id];
+				_returned = _attach;
 				ctrlSetText [1400, format["%1%2 ", _input, _attach]];
 			}
 			else
 			{
 				_attach = format["%1There is no process with id: %3.%1%1%2", _CRLF, coala_currentFolderName, _id];
+				_returned = _attach;
 				ctrlSetText [1400, format["%1%2 ", _input, _attach]];
 			};
 		}
 		else
 		{
 			_attach = format["%1Please also add a process id.%1%1%2", _CRLF, coala_currentFolderName];
+			_returned = _attach;
 			ctrlSetText [1400, format["%1%2 ", _input, _attach]];
 		};
 	};
@@ -107,6 +111,7 @@ fncoala_excecuteCommand =
 			if(count _file > 0) then
 			{
 				_attach = format["%1Opening File: %2%1%1%3", _CRLF, _filename, coala_currentFolderName];
+				_returned = _attach;
 				ctrlSetText [1400, format["%1%2 ", _input, _attach]];
 				
 				if(count _file > 5) then
@@ -130,18 +135,21 @@ fncoala_excecuteCommand =
 				else
 				{
 					_attach = format["%1Error: Could not open file. (File is empty)%1%1%3", _CRLF, _filename, coala_currentFolderName];
+					_returned = _attach;
 					ctrlSetText [1400, format["%1%2 ", _input, _attach]];
 				};
 			}
 			else
 			{
 				_attach = format["%1Error: No such file in this folder.%1%1%3", _CRLF, _filename, coala_currentFolderName];
+				_returned = _attach;
 				ctrlSetText [1400, format["%1%2 ", _input, _attach]];
 			};
 		}
 		else
 		{
 			_attach = format["%1Please also add a Filename.%1%1%3", _CRLF, _filename, coala_currentFolderName];
+			_returned = _attach;
 			ctrlSetText [1400, format["%1%2 ", _input, _attach]];
 		};
 	};
@@ -153,6 +161,7 @@ fncoala_excecuteCommand =
 		_toReturn = [_commandHelp] call fncoala_generateListFromArray;
 		
 		_attach = format["%1Availabe Command are:%2%1%1%3", _CRLF, _toReturn, coala_currentFolderName];
+		_returned = _attach;
 		ctrlSetText [1400, format["%1%2 ", _input, _attach]];
 	};
 	if(_cmd == "cd") then // CHANGE DIRECTORY
@@ -180,17 +189,20 @@ fncoala_excecuteCommand =
 				coala_currentFolderName = format["%1\", [_id] call fncoala_getCompleteFolderName];
 				
 				_attach = format["%1%1%3", _CRLF, _toReturn, coala_currentFolderName];
+				_returned = _attach;
 				ctrlSetText [1400, format["%1%2 ", _input, _attach]];
 			}
 			else
 			{
 				_attach = format["%1Could not Find Folder: '%2'%1%1%3", _CRLF, _parameters select 1, coala_currentFolderName];
+				_returned = _attach;
 				ctrlSetText [1400, format["%1%2 ", _input, _attach]];
 			};
 		}
 		else
 		{
 			_attach = format["%1Could not Find Folder: %2%1%1%3", _CRLF, "''", coala_currentFolderName];
+			_returned = _attach;
 			ctrlSetText [1400, format["%1%2 ", _input, _attach]];
 		};
 	};
@@ -208,6 +220,7 @@ fncoala_excecuteCommand =
 			_folderList = format["%1-Folder is empty-",_CRLF];
 		};
 		_attach = format["%1%2%2%3", _folderList, _CRLF, coala_currentFolderName];
+		_returned = _attach;
 		ctrlSetText [1400, format["%1%2 ", _input, _attach]];
 	};
 	if(_cmd == "time") then
@@ -230,6 +243,7 @@ fncoala_excecuteCommand =
 		
 		_attach = format["%1%2%1%1%3", _CRLF, _time24, coala_currentFolderName];
 		ctrlSetText [1400, format["%1%2 ", _input, _attach]];
+		_returned = _attach;
 	};
 	if(!(_cmd in _commands)) then
 	{
