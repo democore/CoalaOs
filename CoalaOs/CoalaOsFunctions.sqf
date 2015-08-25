@@ -16,7 +16,7 @@ fncoala_excecuteCommandFromNonConsole =
 	};
 };
 
-//Führt den übergebenen Command aus.
+//FÃ¼hrt den Ã¼bergebenen Command aus.
 fncoala_excecuteCommand = 
 {
 	//[command : String] call fnc_excecuteCommand;
@@ -220,7 +220,6 @@ fncoala_excecuteCommand =
 			_folderList = format["%1-Folder is empty-",_CRLF];
 		};
 		_attach = format["%1%2%2%3", _folderList, _CRLF, coala_currentFolderName];
-		_returned = _attach;
 		ctrlSetText [1400, format["%1%2 ", _input, _attach]];
 	};
 	if(_cmd == "time") then
